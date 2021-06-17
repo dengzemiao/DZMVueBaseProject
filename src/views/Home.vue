@@ -2,12 +2,18 @@
   <div class="container-full-column-center">
     <span>BASE PROJECT</span>
     <span>Vue 2.x</span>
+    <span>{{ env }}</span>
   </div>
 </template>
 
 <script>
 
 export default {
+  data () {
+    return {
+      env: process.env
+    }
+  }
 }
 </script>
 
