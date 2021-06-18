@@ -6,7 +6,7 @@
 
 * 默认 `无 CSS 预处理器`、`无 JS 语法检测`
 
-* 支持 `Antdv UI`、`Vuex 数据持久化`、`Axios 基础请求配置`、`其他常用基础配置`、`各种文件下载`
+* 支持 `Antdv UI`、`七牛上传`、`Vuex 数据持久化`、`Axios 基础请求配置`、`其他常用基础配置`、`各种文件下载`
 
 #### CSS 预处理器安装
 
@@ -28,6 +28,12 @@
   $ npm install sass sass-loader --save-dev
   ```
 
-#### CSS 预处理器安装
+#### 七牛上传管理
+
+* 移除 `七牛`
+
+  ```
+  $ npm uninstall qiniu-js --save
+  ```
 
 
