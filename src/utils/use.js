@@ -17,3 +17,5 @@ moment.locale('zh-cn')
 // 配置到 Vue
 Vue.use(VueLs, Pub.VUE_LS_OPTIONS)
 Vue.prototype.$pub = Pub
+Vue.prototype.$moment = moment
+
