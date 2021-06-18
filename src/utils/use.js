@@ -26,3 +26,5 @@ Vue.use(VueAxios)
 Vue.use(Antd)
 Vue.use(VueLs, Pub.VUE_LS_OPTIONS)
 Vue.prototype.$pub = Pub
+Vue.prototype.$moment = moment
+
