@@ -28,6 +28,4 @@
   $ npm install sass sass-loader --save-dev
   ```
 
-#### CSS 预处理器安装
-
 
