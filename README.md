@@ -36,4 +36,3 @@
   $ npm uninstall qiniu-js --save
   ```
 
-
