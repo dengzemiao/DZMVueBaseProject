@@ -1,25 +1,25 @@
 <template>
   <!-- 主视图 -->
-  <div class='upload-view'>
+  <div class="upload-view">
     <!-- 上传组件 -->
     <a-upload
-      :accept='accept'
-      :multiple='multiple'
-      :disabled='disabled'
-      :showUploadList='showUploadList'
-      :fileList='fileList'
-      :beforeUpload='beforeUpload'
-      :customRequest='customRequest'
-      :remove='remove'
+      :accept="accept"
+      :multiple="multiple"
+      :disabled="disabled"
+      :showUploadList="showUploadList"
+      :fileList="fileList"
+      :beforeUpload="beforeUpload"
+      :customRequest="customRequest"
+      :remove="remove"
     >
       <!-- 自定义上传组件 -->
-      <slot name='up-slot' :disabled='disabled'>
+      <slot name="up-slot" :disabled="disabled">
         <!-- 上传按钮 -->
-        <a-button :disabled='disabled'>
+        <a-button :disabled="disabled">
           <!-- 上传 icon -->
-          <slot name='up-icon'><a-icon type='upload' /></slot>
+          <slot name="up-icon"><a-icon type="upload" /></slot>
           <!-- 上传文字 -->
-          <slot name='up-title'>上传文件</slot>
+          <slot name="up-title">上传文件</slot>
         </a-button>
       </slot>
     </a-upload>
