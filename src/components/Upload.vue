@@ -1,8 +1,40 @@
 <template>
   <!-- 主视图 -->
   <div class="upload-view">
-    <!-- 上传组件 -->
+    <!--  a-upload-dragger 组件 -->
+    <a-upload-dragger
+      v-if="isDragger"
+      :accept="accept"
+      :multiple="multiple"
+      :disabled="disabled"
+      :showUploadList="showUploadList"
+      :fileList="fileList"
+      :beforeUpload="beforeUpload"
+      :customRequest="customRequest"
+      :remove="remove"
+    >
+      <!-- 自定义上传组件 -->
+      <slot name="up-slot" :disabled="disabled">
+        <!-- icon -->
+        <p class="ant-upload-drag-icon">
+          <!-- 上传 icon -->
+          <slot name="up-icon"><a-icon type="inbox" /></slot>
+        </p>
+        <!-- 文案 -->
+        <p class="ant-upload-text">
+          <!-- 上传文案 -->
+          <slot name="up-title">点击或拖拽文件到此区域上传</slot>
+        </p>
+        <!-- 提示文案 -->
+        <p class="ant-upload-hint">
+          <!-- 上传提示文案 -->
+          <slot name="up-hint">支持单次或批量上传</slot>
+        </p>
+      </slot>
+    </a-upload-dragger>
+    <!--  a-upload 组件 -->
     <a-upload
+      v-else
       :accept="accept"
       :multiple="multiple"
       :disabled="disabled"
@@ -18,7 +50,7 @@
         <a-button :disabled="disabled">
           <!-- 上传 icon -->
           <slot name="up-icon"><a-icon type="upload" /></slot>
-          <!-- 上传文字 -->
+          <!-- 上传文案 -->
           <slot name="up-title">上传文件</slot>
         </a-button>
       </slot>
@@ -34,6 +66,12 @@ import { uploadQiNiu } from '@/utils/upload'
 export default {
   props: {
     // =============================== 原生属性 - a-upload 自带属性扩展 ========
+    // 启用拖拽上传
+    // (false: 使用 a-upload 组件，true: 使用 a-upload-dragger 组件)
+    isDragger: {
+      type: Boolean,
+      default: () => false
+    },
     // 接受上传的文件类型
     // 参考地址：https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#unique_file_type_specifiers
     // 音频：'audio/*'
