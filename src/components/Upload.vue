@@ -1020,7 +1020,7 @@ export default {
     // 获取文件后缀类型
     fileExtension (filePath) {
       // 获取最后一个.的位置
-      var index= filePath.lastIndexOf(".")
+      var index= filePath.lastIndexOf('.')
       // 获取后缀
       var type = filePath.substr(index + 1)
       // 返回类型
