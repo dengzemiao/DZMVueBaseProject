@@ -1,5 +1,6 @@
 <template>
   <div class="container-full-column-center">
+    <!-- 提示 -->
     <span>BASE PROJECT</span>
     <span>Vue 2.x</span>
     <!-- 安装提示 -->
