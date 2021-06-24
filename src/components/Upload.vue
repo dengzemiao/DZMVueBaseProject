@@ -89,6 +89,7 @@ export default {
     //   name: '必带，文件名',
     //   // uploading(上传中)、done(上传成功)、error(上传失败)、removed(移除，点击组件自带的删除按钮会被设置为移除状态，通常只需要前三种状态)
     //   status: '必带，上传状态',
+    //   url: '可选，有链接可以进行跳转',
     //   dupid: '可选，防止重复文件标识(file.lastModified)',
     //   upid: '可选，本轮上传唯一标识，提交服务器时可剔除',
     //   如果需要什么其他字段或辅助字段，可以自行添加，或者通过拦截 beforeUploadPro 拿到 fileJson 自行附带
