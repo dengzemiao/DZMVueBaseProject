@@ -112,7 +112,7 @@ const Pub = {
         // 匹配是否存在
         types.some(item => {
           // 匹配规则
-          var reg = new RegExp(`.${item}?`,'i')
+          var reg = new RegExp(`\\.${item}\\?`, 'i')
           // 匹配结果
           var results = filePath.match(reg) || []
           // 取得结果
