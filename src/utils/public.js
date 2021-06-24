@@ -135,7 +135,7 @@ const Pub = {
       // 获取路径中最后一个 '.' 位置
       var index = filePath.lastIndexOf('.')
       // 截取尾部后缀
-      var type = filePath.substr(index + 1)
+      type = filePath.substr(index + 1)
     }
     // 返回
     return type
