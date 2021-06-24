@@ -82,39 +82,63 @@ const Pub = {
   // ================================= 《 文 件 路 径 处 理 》
 
   // 是否为图片
-  FILE_IS_IMAGE (filePath) {
+  FILE_IS_IMAGE (filePath, isFuzzy = true) {
     // 后缀列表（如果缺少自行补充）
     const types = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff']
-    // 文件后缀
-    const type = this.FILE_EXTENSION(filePath)
-    // 是否包含
-    return types.indexOf(type) !== -1
+    // 返回匹配结果
+    return this.FILE_IS_TYPE(filePath, types, isFuzzy)
   },
 
   // 是否为视频
-  FILE_IS_VIDEO (filePath) {
+  FILE_IS_VIDEO (filePath, isFuzzy = true) {
     // 后缀列表（如果缺少自行补充）
     const types = ['mp4', 'mp3', 'avi', 'wmv', 'mpg', 'mpeg', 'mov', 'rm', 'ram', 'swf', 'flv', 'wma', 'avi', 'rmvb', 'mkv']
-    // 文件后缀
-    const type = this.FILE_EXTENSION(filePath)
-    // 是否包含
-    return types.indexOf(type) !== -1
+    // 返回匹配结果
+    return this.FILE_IS_TYPE(filePath, types, isFuzzy)
+  },
+
+  // 检查文件后缀是否为存在指定格式列表中（isFuzzy：如果正常匹配失败，是否允许使用模糊匹配二次匹配）
+  FILE_IS_TYPE (filePath, types, isFuzzy = true) {
+    // 匹配结果
+    var isResult = false
+    // 路径有值 && 格式列表有值
+    if (filePath && filePath.length && types.length) {
+      // 文件后缀
+      const type = this.FILE_EXTENSION(filePath)
+      // 精确匹配
+      isResult = types.indexOf(type.toLowerCase()) !== -1
+      // 匹配失败 && 允许模糊匹配
+      if (!isResult && isFuzzy) {
+        // 匹配是否存在
+        types.some(item => {
+          // 匹配规则
+          var reg = new RegExp(`.${item}?`,'i')
+          // 匹配结果
+          var results = filePath.match(reg) || []
+          // 取得结果
+          isResult = Boolean(results.length)
+          // 返回
+          return isResult
+        })
+      }
+    }
+    // 返回
+    return isResult
   },
 
   // 获取路径后缀（不带 '.'）
-  FILE_EXTENSION (filePath, toLowerCase = true) {
-    // 获取路径中最后一个 '.' 位置
-    var index = filePath.lastIndexOf('.')
-    // 截取尾部后缀
-    var type = filePath.substr(index + 1)
-    // 是否转为小写
-    if (toLowerCase) {
-      // 转为小写返回
-      return type.toLowerCase()
-    } else {
-      // 不做处理返回
-      return type
+  FILE_EXTENSION (filePath) {
+    // 后缀类型
+    var type = ''
+    // 路径有值
+    if (filePath && filePath.length) {
+      // 获取路径中最后一个 '.' 位置
+      var index = filePath.lastIndexOf('.')
+      // 截取尾部后缀
+      var type = filePath.substr(index + 1)
     }
+    // 返回
+    return type
   },
 
   // ================================= 《 针 对 项 目 自 定 义 》

@@ -55,10 +55,15 @@ export default {
     touchPreview () {
       // 预览图片
       this.$refs['preview-modal'].showModal('https://img1.baidu.com/it/u=2777480701,3081791725&fm=26&fmt=auto&gp=0.jpg')
+
       // 预览视频
       // this.$refs['preview-modal'].showModal('https://media.w3.org/2010/05/sintel/trailer.mp4')
+
       // 预览文件
       // this.$refs['preview-modal'].showModal('https://image.baidu.com/search/index?tn=baiduimage&ps=1&ct=201326592&lm=-1&cl=2&nc=1&ie=utf-8&word=%E7%BE%8E%E5%A5%B3')
+
+      // 后缀在文件中间的情况预览
+      // this.$refs['preview-modal'].showModal('https://vprivate.hepai.video/local/private_video/8931135415d90e8aca799c81c084487f.mp4?e=1624260783&token=AciT33E89duMqx4Q_mkGN6SJ6bUDRkk-zRxN-v8P:BRIhB2UpzRwtthXr-JsdBVWoC4U=')
     }
   }
 }
