@@ -143,6 +143,18 @@ const Pub = {
 
   // ================================= 《 针 对 项 目 自 定 义 》
 
+  // 项目运行环境
+  IS_DEBUG () {
+    // 判断是否为正式域名地址
+    if (window.location.host === 'task.hepai.video') {
+      // 线上环境
+      return false
+    } else {
+      // 调试环境
+      return true
+    }
+  },
+
   // Vue.ls 配置
   VUE_LS_OPTIONS () {
     return {
