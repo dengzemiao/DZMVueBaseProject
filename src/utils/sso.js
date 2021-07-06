@@ -1,6 +1,8 @@
 // 单点登录服务器地址
 export const SSO_URL = 'http://api.ad.test.netjoy.com:8090'
 // export const SSO_URL = 'https://api-account.tradeplus.net.cn'
+// export const SSO_URL = process.env.VUE_APP_API_SSO_URL;
+
 // 单点登录回调域名地址
 export const SSO_URL_REDIRECT = `${window.location.protocol}//${window.location.host}`
 
