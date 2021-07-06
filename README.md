@@ -8,24 +8,6 @@
 
 * 支持 `Vuex 数据持久化`、`Axios 基础请求配置`、`其他常用基础配置`、`各种文件下载`
 
-#### CSS 预处理器安装
-
-* `Less` 安装
-
-  ```
-  $ npm install less less-loader --save-dev
-  ```
-
-* `Stylus` 安装
-
-  ```
-  $ npm install stylus stylus-loader --save-dev
-  ```
-
-* `Sass` 安装
-
-  ```
-  $ npm install sass sass-loader --save-dev
-  ```
+#### [CSS 预处理器安装（Less、Sass、Stylus）](https://blog.csdn.net/zz00008888/article/details/118525946)
 
 
