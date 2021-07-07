@@ -10,9 +10,9 @@
 
 * 如果拷贝到新的工程下，注意隐藏文件是否拷贝成功。
 
-* [Antd 官方文档](https://www.antdv.com/docs/vue/introduce-cn/)
-
 * 下载项目之后先执行 `npm install` 安装依赖库
+
+* [Antd 官方文档](https://www.antdv.com/docs/vue/introduce-cn/)
 
 #### 二、[CSS 预处理器安装（Less、Sass、Stylus）](https://blog.csdn.net/zz00008888/article/details/118525946)
 
