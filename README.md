@@ -10,7 +10,9 @@
 
 * 如果拷贝到新的工程下，注意隐藏文件是否拷贝成功。
 
-* 下载项目之后先执行 `npm install` 安装依赖库
+* 下载项目之后先执行 `npm install` 安装依赖库，尝试运行项目
+
+* 如果运行不了项目，可以删除 `node_modules` 与 `package-lock.json` 文件后，执行 `npm install`，等重新安装完成在运行项目，可能依赖包存在缓存，清理一下。
 
 * [Vant UI 官方文档](https://design.youzan.com/components.html)
 
