@@ -11,6 +11,14 @@
       :after-read="customRequest"
       :before-delete="remove"
     >
+      <!-- 自定义上传组件 -->
+      <slot name="up-slot" :disabled="disabled">
+        <!-- 上传按钮 -->
+        <van-button :disabled="disabled">
+          <!-- 上传文案 -->
+          <slot name="up-title">上传文件</slot>
+        </van-button>
+      </slot>
     </van-uploader>
   </div>
 </template>
@@ -31,7 +39,7 @@ export default {
     // 特殊匹配自行传入正则
     accept: {
       type: String,
-      default: () => undefined
+      default: () => ''
     },
     // 已经上传的文件列表（受控）
     // 文件案例：
