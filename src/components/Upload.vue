@@ -12,7 +12,7 @@
       :before-delete="remove"
     >
       <!-- 自定义上传组件 -->
-      <slot name="up-slot" :disabled="disabled">
+      <slot name="up-slot" :disabled="disabled" v-if="isCustom">
         <!-- 上传按钮 -->
         <van-button :disabled="disabled">
           <!-- 上传文案 -->
@@ -31,6 +31,11 @@ import { uploadQiNiu } from '@/utils/qiniu'
 export default {
   props: {
     // =============================== 原生属性 - a-upload 自带属性扩展 ========
+    // 是否启用自定义上传UI
+    isCustom: {
+      type: Boolean,
+      default: () => false
+    },
     // 接受上传的文件类型
     // 参考地址：https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#unique_file_type_specifiers
     // 音频：'audio/*'

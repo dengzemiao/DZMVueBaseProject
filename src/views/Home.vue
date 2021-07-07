@@ -8,7 +8,7 @@
     <!-- 按钮 -->
     <van-button type="primary" style="margin-top: 15px;">Vant UI 已安装</van-button>
     <!-- 上传组件 -->
-    <Upload :beforeUploadPro="beforeUploadPro" :uploadResult="uploadResult"></Upload>
+    <Upload style="margin-top: 15px;" :beforeUploadPro="beforeUploadPro" :uploadResult="uploadResult"></Upload>
   </div>
 </template>
 
