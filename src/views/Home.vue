@@ -4,7 +4,7 @@
     <span>BASE PROJECT</span>
     <span>Vue 2.x</span>
     <!-- 按钮 -->
-    <van-button type="primary">Vant UI 安装成功</van-button>
+    <van-button type="primary" style="margin-top: 15px;">Vant UI 已安装</van-button>
   </div>
 </template>
 
