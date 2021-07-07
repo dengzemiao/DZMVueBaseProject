@@ -7,6 +7,8 @@
     <Loading :loading="isLoading"></Loading>
     <!-- 按钮 -->
     <van-button type="primary" style="margin-top: 15px;">Vant UI 已安装</van-button>
+    <!-- 上传组件 -->
+    <Upload :beforeUploadPro="beforeUploadPro" :uploadResult="uploadResult"></Upload>
   </div>
 </template>
 
@@ -26,20 +28,17 @@ export default {
   methods: {
     // 准备上传
     beforeUploadPro () {
-      this.isLoading = true
       return true
     },
     // 上传结果
     uploadResult (fileJson, res) {
       // 上传中信息输出
-      console.log(fileJson, res)
-      // 进入加载
-      this.isLoading = false
+      // console.log(fileJson, res)
       // 上传结果判断
       if (fileJson.status === 'done') {
-        this.$message.success('上传成功')
-      } else if (fileJson.status === 'error') {
-        this.$message.error('上传失败')
+        this.$toast.success('上传成功');
+      } else if (fileJson.status === 'failed') {
+        this.$toast.fail('上传失败');
       } else {
         // console.log('正在上传');
       }

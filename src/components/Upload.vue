@@ -1,60 +1,17 @@
 <template>
   <!-- 主视图 -->
   <div class="upload-view">
-    <!--  a-upload-dragger 组件 -->
-    <a-upload-dragger
-      v-if="isDragger"
+    <!-- van-uploader 组件 -->
+    <van-uploader
       :accept="accept"
       :multiple="multiple"
       :disabled="disabled"
-      :showUploadList="showUploadList"
-      :fileList="fileList"
-      :beforeUpload="beforeUpload"
-      :customRequest="customRequest"
-      :remove="remove"
+      :fileList="showUploadList ? fileList : []"
+      :before-read="beforeUpload"
+      :after-read="customRequest"
+      :before-delete="remove"
     >
-      <!-- 自定义上传组件 -->
-      <slot name="up-slot" :disabled="disabled">
-        <!-- icon -->
-        <p class="ant-upload-drag-icon">
-          <!-- 上传 icon -->
-          <slot name="up-icon"><a-icon type="inbox" /></slot>
-        </p>
-        <!-- 文案 -->
-        <p class="ant-upload-text">
-          <!-- 上传文案 -->
-          <slot name="up-title">点击或拖拽文件到此区域上传</slot>
-        </p>
-        <!-- 提示文案 -->
-        <p class="ant-upload-hint">
-          <!-- 上传提示文案 -->
-          <slot name="up-hint">支持单次或批量上传</slot>
-        </p>
-      </slot>
-    </a-upload-dragger>
-    <!--  a-upload 组件 -->
-    <a-upload
-      v-else
-      :accept="accept"
-      :multiple="multiple"
-      :disabled="disabled"
-      :showUploadList="showUploadList"
-      :fileList="fileList"
-      :beforeUpload="beforeUpload"
-      :customRequest="customRequest"
-      :remove="remove"
-    >
-      <!-- 自定义上传组件 -->
-      <slot name="up-slot" :disabled="disabled">
-        <!-- 上传按钮 -->
-        <a-button :disabled="disabled">
-          <!-- 上传 icon -->
-          <slot name="up-icon"><a-icon type="upload" /></slot>
-          <!-- 上传文案 -->
-          <slot name="up-title">上传文件</slot>
-        </a-button>
-      </slot>
-    </a-upload>
+    </van-uploader>
   </div>
 </template>
 
@@ -66,12 +23,6 @@ import { uploadQiNiu } from '@/utils/qiniu'
 export default {
   props: {
     // =============================== 原生属性 - a-upload 自带属性扩展 ========
-    // 启用拖拽上传
-    // (false: 使用 a-upload 组件，true: 使用 a-upload-dragger 组件)
-    isDragger: {
-      type: Boolean,
-      default: () => false
-    },
     // 接受上传的文件类型
     // 参考地址：https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#unique_file_type_specifiers
     // 音频：'audio/*'
@@ -85,11 +36,10 @@ export default {
     // 已经上传的文件列表（受控）
     // 文件案例：
     // [{
-    //   uid: '必带，文件唯一标识',
-    //   name: '必带，文件名',
-    //   // uploading(上传中)、done(上传成功)、error(上传失败)、removed(移除，点击组件自带的删除按钮会被设置为移除状态，通常只需要前三种状态)
+    //   // uploading(上传中)、done(上传成功)、failed(上传失败)
     //   status: '必带，上传状态',
-    //   url: '可选，有链接可以进行跳转',
+    //   url: '可选，上传成功后必带',
+    //   message: '可选，上传提示文案'
     //   dupid: '可选，防止重复文件标识(file.lastModified)',
     //   upid: '可选，本轮上传唯一标识，提交服务器时可剔除',
     //   如果需要什么其他字段或辅助字段，可以自行添加，或者通过拦截 beforeUploadPro 拿到 fileJson 自行附带
@@ -174,7 +124,7 @@ export default {
     // 2 -> 本次选择的所有文件，有一个检测失败，全部移除
     fileCheckMode: {
       type: Number,
-      default: () => 2
+      default: () => 0
     },
     // =============================== 公用检测 - 文件数量限制 ========
     // 上传文件数量限制：0 -> 不限制，随便传
@@ -375,18 +325,18 @@ export default {
     customRequest (data) {
       // 找到对应的上传文件对象
       const fileJson = this.fileList.find((item) => {
-        return data.file.uid === item.uid
+        return data.file.lastModified === item.dupid
       })
       // 自定义上传服务器
       if (this.customRequestPro) {
         // 自定义请求
         this.customRequestPro(data, fileJson, (isSuccess) => {
-          // uploading(上传中)、done(上传成功)、error(上传失败)
-          const status = isSuccess ? 'done' : 'error'
+          // uploading(上传中)、done(上传成功)、failed(上传失败)
+          const status = isSuccess ? 'done' : 'failed'
           this.customRequestResult(fileJson, status)
         })
       } else {
-        // this.$message.error('请自己实现 customRequestPro 自定义上传操作！')
+        // this.$toast.fail('请自己实现 customRequestPro 自定义上传操作！')
         // 如果需要将上传写到内部这里，回调结果看情况自定义，外层通过 fileJson.status 判断成功失败即可
         // if (this.uploadResult) { this.uploadResult(isOK, fileJson, err || res) }
         // 例如：(七牛上传，给与参考，推荐将下面这段上传封装成一个公共 funcation，在需要用到重新上传按钮的操作时，可以传入指定参数重新上传)
@@ -397,11 +347,13 @@ export default {
       }
     },
     // 准备上传
-    beforeUpload (file, fileList) {
+    beforeUpload (file) {
+      // 创建临时列表
+      const fileList = [file]
       // 开始检测
       return new Promise((resolve, reject) => {
         // 获取本次上传唯一ID
-        const uploadId = this.getUploadId(fileList)
+        const uploadId = this.getUploadId()
         // ----------------------------- 公用检测 - 文件数量限制 --------
         // 总文件数量
         if (this.fileNumber !== 0) {
@@ -418,19 +370,18 @@ export default {
               } else {
                 // 有错误文案
                 if (this.fileNumberError) {
-                  this.$message.error(this.fileNumberError)
+                  this.$toast.fail(this.fileNumberError)
                 }
               }
             }
             // 不允许上传
             reject(new Error())
+            return
           }
         }
         // ----------------------------- 公用检测 - 文件检测 --------
         // 文件对象
         const fileJson = {
-          // 唯一标识符
-          uid: file.uid,
           // 文件名
           name: file.name,
           // 文件状态：uploading(上传中)、done(上传成功)、error(上传失败)
@@ -656,7 +607,7 @@ export default {
                 } else {
                   // 有错误文案
                   if (this.fileRepeatError) {
-                    this.$message.error(this.fileRepeatError)
+                    this.$toast.fail(this.fileRepeatError)
                   }
                 }
               }
@@ -682,7 +633,7 @@ export default {
                 } else {
                   // 有错误文案
                   if (this.fileRepeatError) {
-                    this.$message.error(this.fileRepeatError)
+                    this.$toast.fail(this.fileRepeatError)
                   }
                 }
               }
@@ -728,7 +679,7 @@ export default {
               } else {
                 // 有错误文案
                 if (this.kbCompareError) {
-                  this.$message.error(this.kbCompareError)
+                  this.$toast.fail(this.kbCompareError)
                 }
               }
             }
@@ -787,7 +738,7 @@ export default {
                   } else {
                     // 有错误文案
                     if (this.imgSizeError) {
-                      this.$message.error(this.imgSizeError)
+                      this.$toast.fail(this.imgSizeError)
                     }
                   }
                 }
@@ -811,7 +762,7 @@ export default {
                   } else {
                     // 有错误文案
                     if (this.imgScaleError) {
-                      this.$message.error(this.imgScaleError)
+                      this.$toast.fail(this.imgScaleError)
                     }
                   }
                 }
@@ -876,7 +827,7 @@ export default {
                   } else {
                     // 有错误文案
                     if (this.videSizeError) {
-                      this.$message.error(this.videSizeError)
+                      this.$toast.fail(this.videSizeError)
                     }
                   }
                 }
@@ -900,7 +851,7 @@ export default {
                   } else {
                     // 有错误文案
                     if (this.videScaleError) {
-                      this.$message.error(this.videScaleError)
+                      this.$toast.fail(this.videScaleError)
                     }
                   }
                 }
@@ -925,15 +876,9 @@ export default {
       fileJson.status = status
     },
     // 获取本次上传唯一ID
-    getUploadId (fileList) {
-      // 唯一标识符
-      var uploadId = ''
-      // 获取唯一标识符
-      fileList.forEach((item) => {
-        uploadId += item.uid
-      })
+    getUploadId () {
       // 返回
-      return uploadId
+      return this.UUID()
     },
     // 是否存在本轮错误 uploadId
     isExistErrorUploadId (uploadId) {
@@ -1026,6 +971,13 @@ export default {
       var type = filePath.substr(index + 1)
       // 返回类型
       return type.toLowerCase()
+    },
+    // 生成 UUID
+    UUID () {
+      // 生成随机字符串
+      function S4 () { return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1) }
+      // 拼接
+      return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4())
     }
   }
 }
