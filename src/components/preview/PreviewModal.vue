@@ -31,7 +31,7 @@ export default {
     // 允许新开窗口访问不能识别的链接
     isPerviewOutside: {
       type: Boolean,
-      default: () => true
+      default: () => false
     }
   },
   components: {
@@ -46,10 +46,10 @@ export default {
         if (Pub.FILE_IS_IMAGE(url) && this.isPerviewImage) {
           // 图片地址 && 允许图片预览
           this.$refs['perview-image-modal'].showModal(url)
-        } else if (Pub.FILE_IS_VIDEO(url)) {
+        } else if (Pub.FILE_IS_VIDEO(url) && this.isPerviewVideo) {
           // 视频地址 && 允许视频预览
           this.$refs['perview-video-modal'].showModal(url)
-        } else {
+        } else if (this.isPerviewOutside) {
           // 不能识别的地址 && 允许外链预览
           Pub.OPEN_URL(url)
         }
