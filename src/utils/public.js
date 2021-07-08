@@ -1,5 +1,4 @@
 import router from '@/router'
-import Vue from 'vue'
 
 const Pub = {
 
@@ -155,21 +154,12 @@ const Pub = {
     }
   },
 
-  // Vue.ls 配置
-  VUE_LS_OPTIONS () {
-    return {
-      namespace: 'vue_', // 存储 key 前缀
-      name: 'ls', // 属性命名（ Vue.ls 或 this.$ls ）
-      storage: 'local', // 存储位置: session, local, memory
-    }
-  },
-
   // (获取 || 设置) token
   ACCESS_TOKEN (token) {
     if (token === undefined) {
-      return Vue.ls.get('token')
+      return localStorage.get('token')
     } else {
-      return Vue.ls.set('token', token)
+      return localStorage.set('token', token)
     }
   }
 }
