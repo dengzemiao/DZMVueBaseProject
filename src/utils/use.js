@@ -9,9 +9,6 @@ import Pub from '@/utils/public'
 // axios
 import { VueAxios } from '@/api/axios'
 
-// Vue 存储管理插件
-import VueLs from 'vue-ls'
-
 // 日期工具
 import moment from 'moment'
 import 'moment/locale/zh-cn'
@@ -19,7 +16,6 @@ moment.locale('zh-cn')
 
 // 配置到 Vue
 Vue.use(VueAxios)
-Vue.use(VueLs, Pub.VUE_LS_OPTIONS)
 Vue.prototype.$pub = Pub
 Vue.prototype.$moment = moment
 
