@@ -1,5 +1,8 @@
 import Vue from 'vue'
 
+// 路由守卫
+import '@/utils/permission'
+
 // global less
 import '@/assets/css/common.css'
 
