@@ -157,9 +157,9 @@ const Pub = {
   // (获取 || 设置) token
   ACCESS_TOKEN (token) {
     if (token === undefined) {
-      return localStorage.get('token')
+      return localStorage.getItem('token')
     } else {
-      return localStorage.set('token', token)
+      return localStorage.setItem('token', token)
     }
   }
 }
