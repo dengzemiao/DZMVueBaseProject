@@ -25,7 +25,7 @@ export function uploadQiNiu (fileJson, uploadResult, uploadType) {
         // 输出错误
         // console.log('上传失败', err)
         // 设置为失败状态
-        fileJson.status = 'done'//'error'
+        fileJson.status = 'error'
         // 回调结果
         if (uploadResult) { uploadResult(fileJson, err) }
       },
