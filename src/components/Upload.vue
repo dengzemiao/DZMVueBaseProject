@@ -386,7 +386,7 @@ export default {
           this.customRequestResult(fileJson, status)
         })
       } else {
-        // this.$message.error('请自己实现 customRequestPro 自定义上传操作！')
+        // this.showError('请自己实现 customRequestPro 自定义上传操作！')
         // 如果需要将上传写到内部这里，回调结果看情况自定义，外层通过 fileJson.status 判断成功失败即可
         // if (this.uploadResult) { this.uploadResult(isOK, fileJson, err || res) }
         // 例如：(七牛上传，给与参考，推荐将下面这段上传封装成一个公共 funcation，在需要用到重新上传按钮的操作时，可以传入指定参数重新上传)
@@ -400,9 +400,23 @@ export default {
     beforeUpload (file, fileList) {
       // 开始检测
       return new Promise((resolve, reject) => {
-        // 获取本次上传唯一ID
-        const uploadId = this.getUploadId()
+
+        // ----------------------------- 公用赋值 - 配置上传本轮唯一ID --------
+
+        // 获取上传本轮唯一ID，检查 file 对象是否有带本轮唯一ID
+        var uploadId = file.uploadId
+        // 没有则是新的一轮选择，需要新获取本轮唯一ID
+        if (!uploadId) { 
+          // 获取到本轮唯一ID
+          uploadId = this.getUploadId()
+          // 全部文件进行赋值
+          fileList.forEach(item => {
+            item.uploadId = uploadId
+          })
+        }
+
         // ----------------------------- 公用检测 - 文件数量限制 --------
+
         // 总文件数量
         if (this.fileNumber !== 0) {
           // 文件总数量
@@ -417,9 +431,7 @@ export default {
                 this.fileNumberErrorPro(file, fileList, uploadId)
               } else {
                 // 有错误文案
-                if (this.fileNumberError) {
-                  this.$message.error(this.fileNumberError)
-                }
+                if (this.fileNumberError) { this.showError(this.fileNumberError) }
               }
             }
             // 不允许上传
@@ -427,7 +439,9 @@ export default {
             return
           }
         }
+
         // ----------------------------- 公用检测 - 文件检测 --------
+
         // 文件对象
         const fileJson = {
           // 唯一标识符
@@ -442,92 +456,60 @@ export default {
           upid: uploadId
           // 其他自用字段可自行附带
         }
+
         // 文件检测 - 同步
         if (this.fileCheckMode !== 0) {
           // 匹配检测模式
           if (this.fileCheckMode === 1) {
             // 本次选择的所有文件，检测失败的移除，成功的上传
-            this.fileCheck(file, fileList, uploadId)
-              .then(() => {
-                // 准备上传 预处理 1
-                this.beforeUploadProReadyOne(file, fileList, fileJson)
-                  .then(() => {
-                    // 加入文件列表
-                    this.fileList.push(fileJson)
-                    // 允许上传
-                    resolve()
-                  })
-                  .catch(() => {
-                    // 不允许上传
-                    reject(new Error())
-                  })
-              })
-              .catch(() => {
-                // 不允许上传
-                reject(new Error())
-              })
+            this.fileCheck(file, fileList, uploadId).then(() => {
+              // 准备上传 预处理 结束
+              this.beforeUploadProEnd(file, fileList, fileJson, resolve, reject)
+            }).catch(() => {
+              // 不允许上传
+              reject(new Error())
+            })
           } else if (this.fileCheckMode === 2) {
             // 本次选择的所有文件，有一个检测失败，全部移除
             // Promise 数组
             const ps = []
             // 存放 Promise
-            fileList.forEach((item) => {
+            fileList.forEach(item => {
               ps.push(this.fileCheck(item, fileList, uploadId))
             })
             // 全部请求
-            Promise.all(ps)
-              .then(() => {
-                // 准备上传 预处理 1
-                this.beforeUploadProReadyOne(file, fileList, fileJson)
-                  .then(() => {
-                    // 加入文件列表
-                    this.fileList.push(fileJson)
-                    // 允许上传
-                    resolve()
-                  })
-                  .catch(() => {
-                    // 不允许上传
-                    reject(new Error())
-                  })
-              })
-              .catch(() => {
-                // 不允许上传
-                reject(new Error())
-              })
+            Promise.all(ps).then(() => {
+              // 准备上传 预处理 结束
+              this.beforeUploadProEnd(file, fileList, fileJson, resolve, reject)
+            }).catch(() => {
+              // 不允许上传
+              reject(new Error())
+            })
           } else {
-            // 加入文件列表
-            this.fileList.push(fileJson)
-            // 允许上传
-            resolve()
+            // 准备上传 预处理 结束
+            this.beforeUploadProEnd(file, fileList, fileJson, resolve, reject)
           }
         } else {
-          // 加入文件列表
-          this.fileList.push(fileJson)
-          // 允许上传
-          resolve()
+          // 准备上传 预处理 结束
+          this.beforeUploadProEnd(file, fileList, fileJson, resolve, reject)
         }
       })
     },
-    // 准备上传 - 预处理 1
-    beforeUploadProReadyOne (file, fileList, fileJson) {
-      // 预处理
-      return new Promise((resolve, reject) => {
-        // ----------------------------- 准备上传 - 预处理 2 --------
-
-        // 准备上传 预处理
-        this.beforeUploadProReadyTwo(file, fileList, fileJson)
-          .then(() => {
-            // 允许上传
-            resolve()
-          })
-          .catch(() => {
-            // 不允许上传
-            reject(new Error())
-          })
+    // 准备上传 - 预处理 结束
+    beforeUploadProEnd (file, fileList, fileJson, resolve, reject) {
+      // 准备上传 预处理
+      this.beforeUploadProReady(file, fileList, fileJson).then(() => {
+        // 加入文件列表
+        this.fileList.push(fileJson)
+        // 允许上传
+        resolve()
+      }).catch(() => {
+        // 不允许上传
+        reject(new Error())
       })
     },
-    // 准备上传 - 预处理 2
-    beforeUploadProReadyTwo (file, fileList, fileJson) {
+    // 准备上传 - 预处理 开始
+    beforeUploadProReady (file, fileList, fileJson) {
       // 预处理
       return new Promise((resolve, reject) => {
         // 外传回调
@@ -535,7 +517,7 @@ export default {
           // 获取回调结果
           const p = this.beforeUploadPro(file, fileList, fileJson)
           // 检测返回类型
-          if (typeof p === 'boolean') {
+          if (typeof(p) === 'boolean') {
             // 是否为 Boolean
             if (p) {
               // 允许上传
@@ -544,11 +526,7 @@ export default {
               // 不允许上传
               reject(new Error())
             }
-          } else if (
-            !!p &&
-            (typeof p === 'object' || typeof obj === 'function') &&
-            typeof p.then === 'function'
-          ) {
+          } else if (!!p && (typeof(p) === 'object' || typeof obj === 'function') && typeof(p.then) === 'function') {
             // 是否为 Promise
             p.then(() => {
               // 允许上传
@@ -573,7 +551,7 @@ export default {
           // 获取回调结果
           const p = this.removePro(file)
           // 检测返回类型
-          if (typeof p === 'boolean') {
+          if (typeof(p) === 'boolean') {
             // 是否为 Boolean
             if (p) {
               // 删除文件
@@ -585,11 +563,7 @@ export default {
               // 不允许删除
               reject(new Error())
             }
-          } else if (
-            !!p &&
-            (typeof p === 'object' || typeof obj === 'function') &&
-            typeof p.then === 'function'
-          ) {
+          } else if (!!p && (typeof(p) === 'object' || typeof obj === 'function') && typeof(p.then) === 'function') {
             // 是否为 Promise
             p.then(() => {
               // 删除文件
@@ -615,31 +589,26 @@ export default {
     fileCheck (file, fileList, uploadId) {
       // 预处理
       return new Promise((resolve, reject) => {
+
         // ----------------------------- 公用检测 - 文件重复 --------
+
         // 判断重复文件
         if (this.fileRepeatMode !== 0) {
           // 获取重复列表
           const repeatFiles = []
-          fileList.forEach((itemOne) => {
-            this.fileList.some((itemTwo) => {
+          fileList.forEach(itemOne => {
+            this.fileList.some(itemTwo => {
               // 检测到重复文件 名称相同 && 最后修改时间相同 && 上传ID不相同
-              const isRepeat =
-                itemOne.name === itemTwo.name &&
-                itemOne.lastModified === itemTwo.dupid &&
-                uploadId !== itemTwo.upid
-              if (isRepeat) {
-                repeatFiles.push(itemOne)
-              }
+              const isRepeat = itemOne.name === itemTwo.name && itemOne.lastModified === itemTwo.dupid && uploadId !== itemTwo.upid
+              if (isRepeat) { repeatFiles.push(itemOne) }
               return isRepeat
             })
           })
           // 根据重复类型检测
           if (this.fileRepeatMode === 1) {
             // 禁止重复文件(多选模式：本次选择的所有文件，重复文件移除，不重复文件上传)
-            const isRepeat = this.fileList.some((item) => {
-              return (
-                file.name === item.name && file.lastModified === item.dupid
-              )
+            const isRepeat = this.fileList.some(item => {
+              return file.name === item.name && file.lastModified === item.dupid
             })
             // 存在重复
             if (isRepeat) {
@@ -648,21 +617,15 @@ export default {
                 // 有错误回调
                 if (this.fileRepeatErrorPro) {
                   // 错误回调
-                  this.fileRepeatErrorPro(
-                    file,
-                    fileList,
-                    uploadId,
-                    repeatFiles
-                  )
+                  this.fileRepeatErrorPro(file, fileList, uploadId, repeatFiles)
                 } else {
                   // 有错误文案
-                  if (this.fileRepeatError) {
-                    this.$message.error(this.fileRepeatError)
-                  }
+                  if (this.fileRepeatError) { this.showError(this.fileRepeatError) }
                 }
               }
               // 检测失败
               reject(new Error())
+              return
             }
           } else if (this.fileRepeatMode === 2) {
             // 禁止重复文件(多选模式：本次选择的所有文件，有一个存在重复，全部移除)
@@ -674,26 +637,21 @@ export default {
                 // 有错误回调
                 if (this.fileRepeatErrorPro) {
                   // 错误回调
-                  this.fileRepeatErrorPro(
-                    file,
-                    fileList,
-                    uploadId,
-                    repeatFiles
-                  )
+                  this.fileRepeatErrorPro(file, fileList, uploadId, repeatFiles)
                 } else {
                   // 有错误文案
-                  if (this.fileRepeatError) {
-                    this.$message.error(this.fileRepeatError)
-                  }
+                  if (this.fileRepeatError) { this.showError(this.fileRepeatError) }
                 }
               }
               // 检测失败
               reject(new Error())
+              return
             }
           }
         }
-        // ----------------------------- 公用检测 - 文件大小 --------
 
+        // ----------------------------- 公用检测 - 文件大小 --------
+      
         // 开启了 - 文件大小检测
         if (this.kbCompareMode !== 0) {
           // 检测结果
@@ -716,8 +674,7 @@ export default {
           } else if (this.kbCompareMode === 22) {
             // 大于等于
             isOK = fileSize >= this.kbCompareSize
-          } else {
-          }
+          } else {}
           // 判断检测结果
           if (!isOK) {
             // 是否允许抛出错误
@@ -728,21 +685,19 @@ export default {
                 this.kbCompareErrorPro(file, fileList, uploadId)
               } else {
                 // 有错误文案
-                if (this.kbCompareError) {
-                  this.$message.error(this.kbCompareError)
-                }
+                if (this.kbCompareError) { this.showError(this.kbCompareError) }
               }
             }
             // 检测失败
             reject(new Error())
+            return
           }
         }
+
         // ----------------------------- 图片检查 - 宽高限制 - 比例限制 --------
+
         // 图片检测
-        if (
-          (this.imgSizeMode !== 0 || this.imgScaleMode !== 0) &&
-          this.isImage(file.name)
-        ) {
+        if ((this.imgSizeMode !== 0 || this.imgScaleMode !== 0) && this.isImage(file.name)) {
           // 获取图片宽高
           this.imageSize(file, (imgWidth, imgHeight) => {
             // 图片检测 - 宽高限制
@@ -752,31 +707,20 @@ export default {
               // 开始检测
               if (this.imgSizeMode === 1) {
                 // 小于
-                isOK =
-                  imgWidth < this.imgSizeWidth &&
-                  imgHeight < this.imgSizeHeight
+                isOK = (imgWidth < this.imgSizeWidth && imgHeight < this.imgSizeHeight)
               } else if (this.kbCompareMode === 2) {
                 // 大于
-                isOK =
-                  imgWidth > this.imgSizeWidth &&
-                  imgHeight > this.imgSizeHeight
+                isOK = (imgWidth > this.imgSizeWidth && imgHeight > this.imgSizeHeight)
               } else if (this.imgSizeMode === 3) {
                 // 等于
-                isOK =
-                  imgWidth === this.imgSizeWidth &&
-                  imgHeight === this.imgSizeHeight
+                isOK = (imgWidth === this.imgSizeWidth && imgHeight === this.imgSizeHeight)
               } else if (this.imgSizeMode === 11) {
                 // 小于等于
-                isOK =
-                  imgWidth <= this.imgSizeWidth &&
-                  imgHeight <= this.imgSizeHeight
+                isOK = (imgWidth <= this.imgSizeWidth && imgHeight <= this.imgSizeHeight)
               } else if (this.imgSizeMode === 22) {
                 // 大于等于
-                isOK =
-                  imgWidth >= this.imgSizeWidth &&
-                  imgHeight >= this.imgSizeHeight
-              } else {
-              }
+                isOK = (imgWidth >= this.imgSizeWidth && imgHeight >= this.imgSizeHeight)
+              } else {}
               // 判断检测结果
               if (!isOK) {
                 // 是否允许抛出错误
@@ -787,20 +731,19 @@ export default {
                     this.imgSizeErrorPro(file, fileList, uploadId)
                   } else {
                     // 有错误文案
-                    if (this.imgSizeError) {
-                      this.$message.error(this.imgSizeError)
-                    }
+                    if (this.imgSizeError) { this.showError(this.imgSizeError) }
                   }
                 }
                 // 检测失败
                 reject(new Error())
+                return
               }
             }
             // 图片检测 - 比例限制
             if (this.imgScaleMode !== 0) {
               // 检测结果
-              var isWidth = imgWidth % this.imgScaleWidth === 0
-              var isHeight = imgHeight % this.imgScaleHeight === 0
+              var isWidth = (imgWidth % this.imgScaleWidth) === 0
+              var isHeight = (imgHeight % this.imgScaleHeight) === 0
               // 判断检测结果
               if (!isWidth && !isHeight) {
                 // 是否允许抛出错误
@@ -811,13 +754,12 @@ export default {
                     this.imgScaleErrorPro(file, fileList, uploadId)
                   } else {
                     // 有错误文案
-                    if (this.imgScaleError) {
-                      this.$message.error(this.imgScaleError)
-                    }
+                    if (this.imgScaleError) { this.showError(this.imgScaleError) }
                   }
                 }
                 // 检测失败
                 reject(new Error())
+                return
               }
             }
             // 检测成功
@@ -826,12 +768,11 @@ export default {
           // 不要在向下走了
           return
         }
+
         // ----------------------------- 视频检查 - 宽高限制 - 比例限制 --------
+
         // 视频检测
-        if (
-          (this.videSizeMode !== 0 || this.videScaleMode !== 0) &&
-          this.isVideo(file.name)
-        ) {
+        if ((this.videSizeMode !== 0 || this.videScaleMode !== 0) && this.isVideo(file.name)) {
           // 获取图片宽高
           this.videoSize(file, (videoWidth, videoHeight) => {
             // 图片检测 - 宽高限制
@@ -841,31 +782,20 @@ export default {
               // 开始检测
               if (this.videSizeMode === 1) {
                 // 小于
-                isOK =
-                  videoWidth < this.videSizeWidth &&
-                  videoHeight < this.videSizeHeight
+                isOK = (videoWidth < this.videSizeWidth && videoHeight < this.videSizeHeight)
               } else if (this.videSizeMode === 2) {
                 // 大于
-                isOK =
-                  videoWidth > this.videSizeWidth &&
-                  videoHeight > this.videSizeHeight
+                isOK = (videoWidth > this.videSizeWidth && videoHeight > this.videSizeHeight)
               } else if (this.videSizeMode === 3) {
                 // 等于
-                isOK =
-                  videoWidth === this.videSizeWidth &&
-                  videoHeight === this.videSizeHeight
+                isOK = (videoWidth === this.videSizeWidth && videoHeight === this.videSizeHeight)
               } else if (this.videSizeMode === 11) {
                 // 小于等于
-                isOK =
-                  videoWidth <= this.videSizeWidth &&
-                  videoHeight <= this.videSizeHeight
+                isOK = (videoWidth <= this.videSizeWidth && videoHeight <= this.videSizeHeight)
               } else if (this.videSizeMode === 22) {
                 // 大于等于
-                isOK =
-                  videoWidth >= this.videSizeWidth &&
-                  videoHeight >= this.videSizeHeight
-              } else {
-              }
+                isOK = (videoWidth >= this.videSizeWidth && videoHeight >= this.videSizeHeight)
+              } else {}
               // 判断检测结果
               if (!isOK) {
                 // 是否允许抛出错误
@@ -876,20 +806,19 @@ export default {
                     this.videSizeErrorPro(file, fileList, uploadId)
                   } else {
                     // 有错误文案
-                    if (this.videSizeError) {
-                      this.$message.error(this.videSizeError)
-                    }
+                    if (this.videSizeError) { this.showError(this.videSizeError) }
                   }
                 }
                 // 检测失败
                 reject(new Error())
+                return
               }
             }
             // 图片检测 - 比例限制
             if (this.videScaleMode !== 0) {
               // 检测结果
-              var isWidth = videoWidth % this.videScaleWidth === 0
-              var isHeight = videoHeight % this.videScaleHeight === 0
+              var isWidth = (videoWidth % this.videScaleWidth) === 0
+              var isHeight = (videoHeight % this.videScaleHeight) === 0
               // 判断检测结果
               if (!isWidth && !isHeight) {
                 // 是否允许抛出错误
@@ -900,13 +829,12 @@ export default {
                     this.videScaleErrorPro(file, fileList, uploadId)
                   } else {
                     // 有错误文案
-                    if (this.videScaleError) {
-                      this.$message.error(this.videScaleError)
-                    }
+                    if (this.videScaleError) { this.showError(this.videScaleError) }
                   }
                 }
                 // 检测失败
                 reject(new Error())
+                return
               }
             }
             // 检测成功
@@ -915,10 +843,17 @@ export default {
           // 不要在向下走了
           return
         }
+
         // ----------------------------- 检测成功 --------
+
         // 检测成功
         resolve()
       })
+    },
+    // 显示错误，统一管理，方便替换
+    showError (message) {
+      // 显示错误
+      this.$message.error(message)
     },
     // 自定义上传结果
     customRequestResult (fileJson, status) {
@@ -980,7 +915,7 @@ export default {
         // 创建视频标签
         const video = document.createElement('video')
         // 加载视频资源
-        video.onloadedmetadata = (evt) => {
+        video.onloadedmetadata = evt => {
           // 移除
           URL.revokeObjectURL(url)
           // 返回宽高
@@ -1016,7 +951,7 @@ export default {
     // 获取文件后缀类型
     fileExtension (filePath) {
       // 获取最后一个.的位置
-      var index= filePath.lastIndexOf('.')
+      var index= filePath.lastIndexOf(".")
       // 获取后缀
       var type = filePath.substr(index + 1)
       // 返回类型
