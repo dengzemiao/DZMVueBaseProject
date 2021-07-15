@@ -172,7 +172,6 @@ export default {
       type: Function,
       default: undefined
     },
-
     // =============================== 公用检测 - 文件重复 ========
     // 文件重复检测模式:
     // 0 -> 允许重复
@@ -180,7 +179,7 @@ export default {
     // 2 -> 禁止重复文件(多选模式：本次选择的所有文件，有一个存在重复，全部移除)
     fileRepeatMode: {
       type: Number,
-      default: () => 0
+      default: () => 2
     },
     // 文件重复检测失败提示
     fileRepeatError: {
