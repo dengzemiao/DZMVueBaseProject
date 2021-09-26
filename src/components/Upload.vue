@@ -30,7 +30,9 @@
 import { uploadQiNiu } from '@/utils/qiniu'
 export default {
   props: {
+
     // =============================== 原生属性 - a-upload 自带属性扩展 ========
+
     // 是否启用自定义上传UI
     isCustom: {
       type: Boolean,
@@ -94,7 +96,9 @@ export default {
       type: Function,
       default: undefined
     },
+
     // =============================== 公用检测 - 文件检测 ========
+
     // 文件检测模式：
     // 0 -> 不检测
     // 1 -> (手机端不支持该属性)本次选择的所有文件，检测失败的移除，成功的上传
@@ -103,7 +107,9 @@ export default {
       type: Number,
       default: () => 2
     },
+
     // =============================== 公用检测 - 检测错误控制 ========
+
     // 每轮文件上传检测错误抛出模式:
     // 0 -> 不限制，有多少错误正常抛出，可以通过每轮的 uploadId 自行判断重复问题
     // 1 -> 本轮检测错误只会抛出一次，如果本轮有多次错误，只会抛出第一次的错误，后续错误都不会在抛出
@@ -117,7 +123,9 @@ export default {
       type: Array,
       default: () => []
     },
+
     // =============================== 公用检测 - 文件数量限制 ========
+
     // 上传文件数量限制：0 -> 不限制，随便传
     fileNumber: {
       type: Number,
@@ -135,7 +143,9 @@ export default {
       type: Function,
       default: undefined
     },
+
     // =============================== 公用检测 - 文件重复 ========
+
     // 文件重复检测模式:
     // 0 -> 允许重复
     // 1 -> 禁止重复文件(多选模式：本次选择的所有文件，重复文件移除，不重复文件上传)
@@ -157,7 +167,9 @@ export default {
       type: Function,
       default: undefined
     },
+
     // =============================== 公用检测 - 文件大小 ========
+
     // 文件大小检测模式（单位 kb）:
     // 0 -> 关闭
     // 1 -> 小于
@@ -186,7 +198,9 @@ export default {
       type: Function,
       default: undefined
     },
+
     // =============================== 图片检查 - 宽高限制 ========
+
     // 图片宽高检测模式（单位 px）:
     // 0 -> 关闭
     // 1 -> 小于
@@ -220,7 +234,9 @@ export default {
       type: Function,
       default: undefined
     },
+
     // =============================== 图片检查 - 比例限制 ========
+
     // 图片比例检测模式（单位 px）:
     // 0 -> 关闭
     // 1 -> 开启
@@ -250,8 +266,10 @@ export default {
       type: Function,
       default: undefined
     },
+
     // =============================== 视频检查 - 宽高限制 ========
-    // 图片宽高检测模式（单位 px）:
+
+    // 视频宽高检测模式（单位 px）:
     // 0 -> 关闭
     // 1 -> 小于
     // 2 -> 大于
@@ -262,52 +280,54 @@ export default {
       type: Number,
       default: () => 0
     },
-    // 图片宽度（单位 px）
+    // 视频宽度（单位 px）
     videSizeWidth: {
       type: Number,
       default: () => 0
     },
-    // 图片高度（单位 px）
+    // 视频高度（单位 px）
     videSizeHeight: {
       type: Number,
       default: () => 0
     },
-    // 图片宽高检测失败提示
+    // 视频宽高检测失败提示
     videSizeError: {
       type: String,
       default: () => '视频宽高与设定宽高不匹配'
     },
-    // 图片宽高检测失败提示回调，实现这个将不使用 videSizeError
+    // 视频宽高检测失败提示回调，实现这个将不使用 videSizeError
     // 类型：(file, fileList, uploadId) => {}
     // uploadId：本次上传操作唯一ID，多选文件模式可通过该唯一ID只显示一次错误
     videSizeErrorPro: {
       type: Function,
       default: undefined
     },
-    // =============================== 图片检查 - 比例限制 ========
-    // 图片比例检测模式（单位 px）:
+
+    // =============================== 视频检查 - 比例限制 ========
+
+    // 视频比例检测模式（单位 px）:
     // 0 -> 关闭
     // 1 -> 开启
     videScaleMode: {
       type: Number,
       default: () => 0
     },
-    // 图片宽度比例
+    // 视频宽度比例
     videScaleWidth: {
       type: Number,
       default: () => 0
     },
-    // 图片高度比例
+    // 视频高度比例
     videScaleHeight: {
       type: Number,
       default: () => 0
     },
-    // 图片比例检测失败提示
+    // 视频比例检测失败提示
     videScaleError: {
       type: String,
       default: () => '视频比例与设定比例不匹配'
     },
-    // 图片比例检测失败提示回调，实现这个将不使用 videScaleError
+    // 视频比例检测失败提示回调，实现这个将不使用 videScaleError
     // 类型：(file, fileList, uploadId) => {}
     // uploadId：本次上传操作唯一ID，多选文件模式可通过该唯一ID只显示一次错误
     videScaleErrorPro: {
