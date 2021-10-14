@@ -1,4 +1,5 @@
 import router from '@/router'
+import moment from 'moment'
 
 const Pub = {
 
@@ -152,6 +153,36 @@ const Pub = {
     }
     // 返回
     return type
+  },
+
+  // ================================= 《 时 间 日 期 》
+
+  // 时间转字符串（今天，昨天，xx月xx日，xxxx年xx月xx日）
+  DATE_STRING (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
+    // 配置格式
+    moment.updateLocale('zh-cn', {
+      calendar: {
+        sameElse: 'M月D日'
+      }
+    })
+    // 获取结果
+    const string = moment(dateString, format).calendar()
+    // 返回结果
+    if (string.includes('月')) {
+      return string
+    } else {
+      return string.replace(/\d+./g, '')
+    }
+  },
+
+  // 指定的日期时间是否 <= 今天
+  DATE_COMPARE (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
+    // 将日期转换为 date 格式
+    const date = moment(dateString, format).format('YYYYMMDD')
+    // 获取今天 date 格式
+    const toDay = moment().format('YYYYMMDD')
+    // 返回比较结果
+    return date <= toDay
   },
 
   // ================================= 《 针 对 项 目 自 定 义 》
