@@ -1,4 +1,5 @@
 import router from '@/router'
+import moment from 'moment'
 
 const Pub = {
 
@@ -152,6 +153,47 @@ const Pub = {
     }
     // 返回
     return type
+  },
+
+  // ================================= 《 时 间 日 期 》
+
+  // 时间转字符串（今天，昨天，xx月xx日，xxxx年xx月xx日）
+  // calendars：用于覆盖配置
+  DATE_STRING (dateString, format = 'YYYY-MM-DD HH:mm:ss', calendars = {}) {
+    // 配置格式
+    moment.updateLocale('zh-cn', {
+      calendar: {
+        // 格式：[中文内容] YYYY-MM-DD HH:mm:ss
+        // dddd：星期几
+        // nextDay: '[明天]',
+        // sameDay: '[今天]',
+        // lastDay: '[昨天]',
+        // nextWeek: '[下周] dddd',
+        // lastWeek: '[上周] dddd',
+        // sameElse: 'YYYY-MM-DD HH:mm',
+        nextDay: '[明天] HH:mm',
+        sameDay: '[今天] HH:mm',
+        lastDay: '[昨天] HH:mm',
+        nextWeek: 'dddd HH:mm',
+        lastWeek: 'dddd HH:mm',
+        sameElse: 'YYYY-MM-DD HH:mm',
+        ...calendars
+      }
+    })
+    // 获取结果
+    const string = moment(dateString, format).calendar()
+    // 返回结果
+    return string
+  },
+
+  // 指定的日期时间是否 <= 今天
+  DATE_COMPARE_TODAY (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
+    // 将日期转换为 date 格式
+    const date = moment(dateString, format).format('YYYYMMDD')
+    // 获取今天 date 格式
+    const toDay = moment().format('YYYYMMDD')
+    // 返回比较结果
+    return date <= toDay
   },
 
   // ================================= 《 针 对 项 目 自 定 义 》
