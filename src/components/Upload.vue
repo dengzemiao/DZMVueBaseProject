@@ -62,7 +62,7 @@
 
 // GitHub 地址：https://github.com/dengzemiao/DZMAntdvUpload
 
-import { uploadQiNiu } from './upload'
+import { uploadQiNiu } from '@/utils/qiniu'
 export default {
   props: {
 
