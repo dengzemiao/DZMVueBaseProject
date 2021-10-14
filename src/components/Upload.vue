@@ -62,12 +62,12 @@
 
 // GitHub 地址：https://github.com/dengzemiao/DZMAntdvUpload
 
-import { uploadQiNiu } from '@/utils/qiniu'
+import { uploadQiNiu } from './upload'
 export default {
   props: {
 
     // =============================== 原生属性 - a-upload 自带属性扩展 ========
-    
+
     // 启用拖拽上传
     // (false: 使用 a-upload 组件，true: 使用 a-upload-dragger 组件)
     isDragger: {
@@ -304,7 +304,7 @@ export default {
 
     // =============================== 视频检查 - 宽高限制 ========
 
-    // 视频宽高检测模式（单位 px）: 
+    // 视频宽高检测模式（单位 px）:
     // 0 -> 关闭
     // 1 -> 小于
     // 2 -> 大于
@@ -340,7 +340,7 @@ export default {
 
     // =============================== 视频检查 - 比例限制 ========
 
-    // 视频比例检测模式（单位 px）: 
+    // 视频比例检测模式（单位 px）:
     // 0 -> 关闭
     // 1 -> 开启
     videScaleMode: {
@@ -417,13 +417,12 @@ export default {
     beforeUpload (file, fileList) {
       // 开始检测
       return new Promise((resolve, reject) => {
-
         // ----------------------------- 公用赋值 - 配置上传本轮唯一ID --------
 
         // 获取上传本轮唯一ID，检查 file 对象是否有带本轮唯一ID
         var uploadId = file.uploadId
         // 没有则是新的一轮选择，需要新获取本轮唯一ID
-        if (!uploadId) { 
+        if (!uploadId) {
           // 获取到本轮唯一ID
           uploadId = this.getUploadId()
           // 全部文件进行赋值
@@ -534,7 +533,7 @@ export default {
           // 获取回调结果
           const p = this.beforeUploadPro(file, fileList, fileJson)
           // 检测返回类型
-          if (typeof(p) === 'boolean') {
+          if (typeof (p) === 'boolean') {
             // 是否为 Boolean
             if (p) {
               // 允许上传
@@ -543,7 +542,7 @@ export default {
               // 不允许上传
               reject(new Error())
             }
-          } else if (!!p && (typeof(p) === 'object' || typeof obj === 'function') && typeof(p.then) === 'function') {
+          } else if (!!p && (typeof (p) === 'object' || typeof obj === 'function') && typeof (p.then) === 'function') {
             // 是否为 Promise
             p.then(() => {
               // 允许上传
@@ -568,7 +567,7 @@ export default {
           // 获取回调结果
           const p = this.removePro(file)
           // 检测返回类型
-          if (typeof(p) === 'boolean') {
+          if (typeof (p) === 'boolean') {
             // 是否为 Boolean
             if (p) {
               // 删除文件
@@ -580,7 +579,7 @@ export default {
               // 不允许删除
               reject(new Error())
             }
-          } else if (!!p && (typeof(p) === 'object' || typeof obj === 'function') && typeof(p.then) === 'function') {
+          } else if (!!p && (typeof (p) === 'object' || typeof obj === 'function') && typeof (p.then) === 'function') {
             // 是否为 Promise
             p.then(() => {
               // 删除文件
@@ -606,7 +605,6 @@ export default {
     fileCheck (file, fileList, uploadId) {
       // 预处理
       return new Promise((resolve, reject) => {
-
         // ----------------------------- 公用检测 - 文件重复 --------
 
         // 判断重复文件
@@ -668,7 +666,7 @@ export default {
         }
 
         // ----------------------------- 公用检测 - 文件大小 --------
-      
+
         // 开启了 - 文件大小检测
         if (this.kbCompareMode !== 0) {
           // 检测结果
@@ -968,7 +966,7 @@ export default {
     // 获取文件后缀类型
     fileExtension (filePath) {
       // 获取最后一个.的位置
-      var index= filePath.lastIndexOf(".")
+      var index = filePath.lastIndexOf('.')
       // 获取后缀
       var type = filePath.substr(index + 1)
       // 返回类型
@@ -979,7 +977,7 @@ export default {
       // 生成随机字符串
       function S4 () { return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1) }
       // 拼接
-      return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4())
+      return (S4() + S4() + '-' + S4() + '-' + S4() + '-' + S4() + '-' + S4() + S4() + S4())
     }
   }
 }
