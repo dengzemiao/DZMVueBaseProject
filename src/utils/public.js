@@ -58,6 +58,20 @@ const Pub = {
     return str.replace(/(\s*$)/g, '')
   },
 
+  // 检查小数点是否超过指定个数 true: 超过 false：没超过
+  CHECK_NUMBER_DECIMAL (value, maxLength) {
+    // 转为字符串
+    var valueString = `${(value || '')}`
+    // 小数长度
+    var decimalLength = 0
+    // 是否存在小数点
+    if (valueString.includes('.')) {
+      // 获取小数长度
+      decimalLength = valueString.split('.')[1].length
+    }
+    return decimalLength > maxLength
+  },
+
   // 判断是否为正数（允许小数点，不能为负数）
   REG_IS_NUMBER (value) {
     return (this.REG_TEST(/^\d+(\.\d+)?$/, value))
