@@ -175,7 +175,7 @@ const Pub = {
         sameDay: '[今天] HH:mm',
         lastDay: '[昨天] HH:mm',
         nextWeek: 'dddd HH:mm',
-        lastWeek: 'dddd HH:mm',
+        lastWeek: '[上周] dddd HH:mm',
         sameElse: 'YYYY-MM-DD HH:mm',
         ...calendars
       }
