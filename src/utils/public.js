@@ -176,7 +176,7 @@ const Pub = {
   },
 
   // 指定的日期时间是否 <= 今天
-  DATE_COMPARE (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
+  DATE_COMPARE_TODAY (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
     // 将日期转换为 date 格式
     const date = moment(dateString, format).format('YYYYMMDD')
     // 获取今天 date 格式
