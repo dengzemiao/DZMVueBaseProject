@@ -158,21 +158,32 @@ const Pub = {
   // ================================= 《 时 间 日 期 》
 
   // 时间转字符串（今天，昨天，xx月xx日，xxxx年xx月xx日）
-  DATE_STRING (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
+  // calendars：用于覆盖配置
+  DATE_STRING (dateString, format = 'YYYY-MM-DD HH:mm:ss', calendars = {}) {
     // 配置格式
     moment.updateLocale('zh-cn', {
       calendar: {
-        sameElse: 'M月D日'
+        // 格式：[中文内容] YYYY-MM-DD HH:mm:ss
+        // dddd：星期几
+        // nextDay: '[明天]',
+        // sameDay: '[今天]',
+        // lastDay: '[昨天]',
+        // nextWeek: '[下周] dddd',
+        // lastWeek: '[上周] dddd',
+        // sameElse: 'YYYY-MM-DD HH:mm',
+        nextDay: '[明天] HH:mm',
+        sameDay: '[今天] HH:mm',
+        lastDay: '[昨天] HH:mm',
+        nextWeek: 'dddd HH:mm',
+        lastWeek: 'dddd HH:mm',
+        sameElse: 'YYYY-MM-DD HH:mm',
+        ...calendars
       }
     })
     // 获取结果
     const string = moment(dateString, format).calendar()
     // 返回结果
-    if (string.includes('月')) {
-      return string
-    } else {
-      return string.replace(/\d+./g, '')
-    }
+    return string
   },
 
   // 指定的日期时间是否 <= 今天
