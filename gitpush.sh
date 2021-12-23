@@ -20,7 +20,7 @@ if [[ $cpmsg =~ "冲突" || $cpmsg =~ "CONFLICT" ]]
 then
   echo "\033[1;31m============================== 合并冲突 pull $cb ==============================\033[0m"
 fi
-echo $cpmsg
+echo "$cpmsg"
 git push origin $cb
 
 # 结束

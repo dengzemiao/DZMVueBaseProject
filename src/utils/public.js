@@ -59,20 +59,6 @@ const Pub = {
     return str.replace(/(\s*$)/g, '')
   },
 
-  // 检查小数点是否超过指定个数 true: 超过 false：没超过
-  CHECK_NUMBER_DECIMAL (value, maxLength) {
-    // 转为字符串
-    var valueString = `${(value || '')}`
-    // 小数长度
-    var decimalLength = 0
-    // 是否存在小数点
-    if (valueString.includes('.')) {
-      // 获取小数长度
-      decimalLength = valueString.split('.')[1].length
-    }
-    return decimalLength > maxLength
-  },
-
   // 判断是否为正数（允许小数点，不能为负数）
   REG_IS_NUMBER (value) {
     return (this.REG_TEST(/^\d+(\.\d+)?$/, value))
@@ -91,6 +77,85 @@ const Pub = {
   // 判断是否为邮箱
   REG_IS_EMAIL (value) {
     return (this.REG_TEST(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/, value))
+  },
+
+  // ================================= 《 小 数 点 处 理 》
+
+  // 检查小数点是否超过指定个数 true: 超过 false：没超过
+  CHECK_NUMBER_DECIMAL (value, maxLength) {
+    // 转为字符串
+    var valueString = `${(value || '')}`
+    // 小数长度
+    var decimalLength = 0
+    // 是否存在小数点
+    if (valueString.includes('.')) {
+      // 获取小数长度
+      decimalLength = valueString.split('.')[1].length
+    }
+    return decimalLength > maxLength
+  },
+
+  // ================================= 《 小 数 点 处 理 》
+
+  // 检查小数点是否超过指定个数 true: 超过 false：没超过
+  CHECK_NUMBER_DECIMAL (value, maxLength) {
+    // 转为字符串
+    var valueString = `${(value || '')}`
+    // 小数长度
+    var decimalLength = 0
+    // 是否存在小数点
+    if (valueString.includes('.')) {
+      // 获取小数长度
+      decimalLength = valueString.split('.')[1].length
+    }
+    return decimalLength > maxLength
+  },
+
+  // 保留小数点位数
+  // value: 数值，支持字符串
+  // decimal：保留小数点位数
+  // isNumber：是否转为 Number，默认 String
+  // isComplete：小数点不够时，是否用 0 尾部进行补全
+  // completeMax：补全最大数限制，0：按实际补全，也就是小数点差几位补几位
+  KEEP_NUMBER_DECIMAL (value, decimal, isNumber, isComplete, completeMax = 0) {
+    // 字符串
+    var valueString = `${value || 0}`
+    // 保留小数点位数
+    var decimalCount = Math.max(0, decimal)
+    // 补全数量
+    var completeMaxCount = Math.max(0, completeMax)
+    // 数字
+    var numberString = valueString
+    var decimalString = ''
+    // 是否存在小数点
+    if (valueString.includes('.')) {
+      // 分割
+      var strs = valueString.split('.')
+      // 记录
+      numberString = strs[0]
+      decimalString = strs[1]
+    }
+    // 分割小数点
+    if (decimalString.length > decimalCount) {
+      // 截取小数点
+      decimalString = decimalString.substring(0, decimalCount)
+    }
+    // 小数位数不够，是否用 0 补全
+    if (isComplete && decimalString.length < decimalCount) {
+      // 补全位数
+      var completeCount = decimalCount - decimalString.length
+      // 检查限制
+      if (completeMaxCount) { completeCount = Math.min(completeMaxCount, completeCount) }
+      // 进行补全
+      if (completeCount) { for (let index = 0; index < completeCount; index++) { decimalString += '0' } }
+    }
+    // 有小数
+    if (decimalString.length) {
+      // 组合
+      numberString += `.${decimalString}`
+    }
+    // 返回
+    return isNumber ? Number(numberString) : numberString
   },
 
   // ================================= 《 文 件 路 径 处 理 》
