@@ -95,19 +95,35 @@ const Pub = {
     return decimalLength > maxLength
   },
 
+  // ================================= 《 小 数 点 处 理 》
+
+  // 检查小数点是否超过指定个数 true: 超过 false：没超过
+  CHECK_NUMBER_DECIMAL (value, maxLength) {
+    // 转为字符串
+    var valueString = `${(value || '')}`
+    // 小数长度
+    var decimalLength = 0
+    // 是否存在小数点
+    if (valueString.includes('.')) {
+      // 获取小数长度
+      decimalLength = valueString.split('.')[1].length
+    }
+    return decimalLength > maxLength
+  },
+
   // 保留小数点位数
   // value: 数值，支持字符串
-  // decimalCount：保留小数点位数
+  // decimal：保留小数点位数
   // isNumber：是否转为 Number，默认 String
   // isComplete：小数点不够时，是否用 0 尾部进行补全
   // completeMax：补全最大数限制，0：按实际补全，也就是小数点差几位补几位
-  KEEP_NUMBER_DECIMAL (value, decimalCount, isNumber, isComplete, completeMax = 0) {
+  KEEP_NUMBER_DECIMAL (value, decimal, isNumber, isComplete, completeMax = 0) {
     // 字符串
     var valueString = `${value || 0}`
     // 保留小数点位数
-    var decimalCount = Math.max(0, decimalCount)
+    var decimalCount = Math.max(0, decimal)
     // 补全数量
-    var completeMax = Math.max(0, completeMax)
+    var completeMaxCount = Math.max(0, completeMax)
     // 数字
     var numberString = valueString
     var decimalString = ''
@@ -129,7 +145,7 @@ const Pub = {
       // 补全位数
       var completeCount = decimalCount - decimalString.length
       // 检查限制
-      if (completeMax) { completeCount = Math.min(completeMax, completeCount) }
+      if (completeMaxCount) { completeCount = Math.min(completeMaxCount, completeCount) }
       // 进行补全
       if (completeCount) { for (let index = 0; index < completeCount; index++) { decimalString += '0' } }
     }
