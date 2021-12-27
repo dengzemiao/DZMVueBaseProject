@@ -17,45 +17,45 @@ export const PROXY_URL_VIDEO_PRI = 'https://vprivate.hepai.video'
 export const PROXY_URL_VIDEO_PUB = 'https://vpublic.hepai.video'
 
 // 下载文件 所有代理
-export function DOWLOAD_FILE_ALL (url, proxy) {
+export function DOWLOAD_FILE_ALL (url, filename, proxy) {
   if (url.includes(PROXY_URL_OTHER) || proxy === PROXY_OTHER) {
-    DOWLOAD_FILE_OTHER(url)
+    DOWLOAD_FILE_OTHER(url, filename)
   } else if (url.includes(PROXY_URL_VIDEO_PRI) || proxy === PROXY_VIDEO_PRI) {
-    DOWLOAD_FILE_VIDEO_PRI(url)
+    DOWLOAD_FILE_VIDEO_PRI(url, filename)
   } else if (url.includes(PROXY_URL_VIDEO_PUB) || proxy === PROXY_VIDEO_PUB) {
-    DOWLOAD_FILE_VIDEO_PUB(url)
+    DOWLOAD_FILE_VIDEO_PUB(url, filename)
   } else {
-    DOWLOAD_FILE_OTHER(url)
+    DOWLOAD_FILE_OTHER(url, filename)
   }
 }
 
 // 下载文件 other
-export function DOWLOAD_FILE_OTHER (url) {
+export function DOWLOAD_FILE_OTHER (url, filename) {
   // 检查是否为全链接
   if (url.includes('http')) {
-    DOWLOAD_FILE(url, PROXY_OTHER, PROXY_URL_OTHER)
+    DOWLOAD_FILE_PRO(url, filename, PROXY_OTHER, PROXY_URL_OTHER)
   } else {
-    DOWLOAD_FILE(url, PROXY_OTHER)
+    DOWLOAD_FILE_PRO(url, filename, PROXY_OTHER)
   }
 }
 
 // 下载文件 private video
-export function DOWLOAD_FILE_VIDEO_PRI (url) {
+export function DOWLOAD_FILE_VIDEO_PRI (url, filename) {
   // 检查是否为全链接
   if (url.includes('http')) {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PRI, PROXY_URL_VIDEO_PRI)
+    DOWLOAD_FILE_PRO(url, filename, PROXY_VIDEO_PRI, PROXY_URL_VIDEO_PRI)
   } else {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PRI)
+    DOWLOAD_FILE_PRO(url, filename, PROXY_VIDEO_PRI)
   }
 }
 
 // 下载文件 private video
-export function DOWLOAD_FILE_VIDEO_PUB (url) {
+export function DOWLOAD_FILE_VIDEO_PUB (url, filename) {
   // 检查是否为全链接
   if (url.includes('http')) {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PUB, PROXY_URL_VIDEO_PUB)
+    DOWLOAD_FILE_PRO(url, filename, PROXY_VIDEO_PUB, PROXY_URL_VIDEO_PUB)
   } else {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PUB)
+    DOWLOAD_FILE_PRO(url, filename, PROXY_VIDEO_PUB)
   }
 }
 
