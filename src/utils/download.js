@@ -1,5 +1,7 @@
 // 参考文章 https://blog.csdn.net/zz00008888/article/details/113847294
 
+// 如果通过 DOWLOAD_FILE()、DOWLOAD_FILE_PRO() 下载自定义文件名不生效，则可以使用 DOWLOAD_FILE_URL_PRO() 方法，前者通过 a 标签直接下载获取，后者通过先请求数据在将数据放置 a 标签身上进行下载。
+
 // --------------------- 针对不同代理封装的自用方法
 
 // 代理协议 other
@@ -124,7 +126,7 @@ export function DOWLOAD_FILE_URL (url, filename) {
 }
 
 /**
- * @description: 不走代理，直接下载指定链接
+ * @description: 不走代理，直接下载指定链接，但是服务器得开启文件访问权限，否则会报跨域错误
  * @param {*} url 非代理的正常全链接
  * @param {*} filename 文件名称
  */
