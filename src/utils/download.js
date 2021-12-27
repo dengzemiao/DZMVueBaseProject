@@ -19,13 +19,13 @@ export const PROXY_URL_VIDEO_PUB = 'https://vpublic.hepai.video'
 // 下载文件 所有代理
 export function DOWLOAD_FILE_ALL (url, proxy) {
   if (url.includes(PROXY_URL_OTHER) || proxy === PROXY_OTHER) {
-    DOWLOAD_FILE_OTHER(url)
+    return DOWLOAD_FILE_OTHER(url)
   } else if (url.includes(PROXY_URL_VIDEO_PRI) || proxy === PROXY_VIDEO_PRI) {
-    DOWLOAD_FILE_VIDEO_PRI(url)
+    return DOWLOAD_FILE_VIDEO_PRI(url)
   } else if (url.includes(PROXY_URL_VIDEO_PUB) || proxy === PROXY_VIDEO_PUB) {
-    DOWLOAD_FILE_VIDEO_PUB(url)
+    return DOWLOAD_FILE_VIDEO_PUB(url)
   } else {
-    DOWLOAD_FILE_OTHER(url)
+    return DOWLOAD_FILE_OTHER(url)
   }
 }
 
@@ -33,9 +33,9 @@ export function DOWLOAD_FILE_ALL (url, proxy) {
 export function DOWLOAD_FILE_OTHER (url) {
   // 检查是否为全链接
   if (url.includes('http')) {
-    DOWLOAD_FILE(url, PROXY_OTHER, PROXY_URL_OTHER)
+    return DOWLOAD_FILE(url, PROXY_OTHER, PROXY_URL_OTHER)
   } else {
-    DOWLOAD_FILE(url, PROXY_OTHER)
+    return DOWLOAD_FILE(url, PROXY_OTHER)
   }
 }
 
@@ -43,9 +43,9 @@ export function DOWLOAD_FILE_OTHER (url) {
 export function DOWLOAD_FILE_VIDEO_PRI (url) {
   // 检查是否为全链接
   if (url.includes('http')) {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PRI, PROXY_URL_VIDEO_PRI)
+    return DOWLOAD_FILE(url, PROXY_VIDEO_PRI, PROXY_URL_VIDEO_PRI)
   } else {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PRI)
+    return DOWLOAD_FILE(url, PROXY_VIDEO_PRI)
   }
 }
 
@@ -53,9 +53,9 @@ export function DOWLOAD_FILE_VIDEO_PRI (url) {
 export function DOWLOAD_FILE_VIDEO_PUB (url) {
   // 检查是否为全链接
   if (url.includes('http')) {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PUB, PROXY_URL_VIDEO_PUB)
+    return DOWLOAD_FILE(url, PROXY_VIDEO_PUB, PROXY_URL_VIDEO_PUB)
   } else {
-    DOWLOAD_FILE(url, PROXY_VIDEO_PUB)
+    return DOWLOAD_FILE(url, PROXY_VIDEO_PUB)
   }
 }
 
@@ -68,7 +68,7 @@ export function DOWLOAD_FILE_VIDEO_PUB (url) {
  * @param {*} proxyhttp 参考 DOWLOAD_FILE_PRO()
  */
 export function DOWLOAD_FILE (url, proxy, proxyhttp) {
-  DOWLOAD_FILE_PRO(url, '', proxy, proxyhttp)
+  return DOWLOAD_FILE_PRO(url, '', proxy, proxyhttp)
 }
 
 /**
@@ -79,23 +79,30 @@ export function DOWLOAD_FILE (url, proxy, proxyhttp) {
  * @param {*} proxyhttp 代理协议的链接地址，如果配置则会替换 url 中该段代理链接地址为 proxy 代理协议，所以 proxyhttp 有值，proxy 必须有值。(例如：http://dowload.file)
  */
 export function DOWLOAD_FILE_PRO (url, filename, proxy, proxyhttp) {
-  // 下载地址
-  var dowloadURL = url
-  // 有代理链接地址，当前链接里面同时存在代理地址可以进行替换
-  if (proxyhttp && proxy && dowloadURL.includes(proxyhttp)) {
-    // 替换代理链接地址为代理协议
-    dowloadURL = dowloadURL.replace(proxyhttp, proxy)
-    // 代理链接下载
-    DOWLOAD_FILE_URL(dowloadURL, filename)
-  } else if (proxy) {
-    // 将下载链接匹配上代理协议
-    dowloadURL = proxy + dowloadURL
-    // 代理链接下载
-    DOWLOAD_FILE_URL(dowloadURL, filename)
-  } else {
-    // 链接下载
-    DOWLOAD_FILE_URL_PRO(dowloadURL, filename)
-  }
+  // Promise
+  return new Promise((resolve, reject) => {
+    // 下载地址
+    var dowloadURL = url
+    // 有代理链接地址，当前链接里面同时存在代理地址可以进行替换
+    if (proxyhttp && proxy && dowloadURL.includes(proxyhttp)) {
+      // 替换代理链接地址为代理协议
+      dowloadURL = dowloadURL.replace(proxyhttp, proxy)
+      // 代理链接下载
+      DOWLOAD_FILE_URL(dowloadURL, filename)
+      // 下载成功
+      resolve()
+    } else if (proxy) {
+      // 将下载链接匹配上代理协议
+      dowloadURL = proxy + dowloadURL
+      // 代理链接下载
+      DOWLOAD_FILE_URL(dowloadURL, filename)
+      // 下载成功
+      resolve()
+    } else {
+      // 链接下载
+      DOWLOAD_FILE_URL_PRO(dowloadURL, filename).then(() => { resolve() }).catch((err) => { reject(err) })
+    }
+  })
 }
 
 /**
@@ -186,4 +193,3 @@ export function DOWLOAD_FILE_NAME (url, filename) {
   // 返回
   return fname
 }
-
