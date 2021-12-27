@@ -117,26 +117,55 @@ export function DOWLOAD_FILE_URL (url, filename) {
 }
 
 /**
- * @description: 下载指定链接
- * @param {*} url 非代理的正常链接
+ * @description: 不走代理，直接下载指定链接
+ * @param {*} url 非代理的正常全链接
  * @param {*} filename 文件名称
  */
 export function DOWLOAD_FILE_URL_PRO (url, filename) {
-  // 获取链接二进制数据
-  fetch(url).then(res => res.blob().then(blob => {
-    // 创建一个a节点
-    var a = document.createElement('a')
-    // 创建一个可供下载链接
-    var url = window.URL.createObjectURL(blob)
-    // 将需要下载的URL赋值给a节点的href
-    a.href = url
-    // 设置节点的download属性值
-    a.download = DOWLOAD_FILE_NAME(url, filename)
-    // 触发点击事件
-    a.click()
-    // 释放
-    window.URL.revokeObjectURL(url)
-  }))
+  // Promise
+  return new Promise((resolve, reject) => {
+    // 获取链接二进制数据
+    fetch(url).then((res) => {
+      // 获得二进制数据
+      res.blob().then((blob) => {
+        // 创建一个a节点
+        var a = document.createElement('a')
+        // 创建一个可供下载链接
+        var url = window.URL.createObjectURL(blob)
+        // 将需要下载的URL赋值给a节点的href
+        a.href = url
+        // 设置节点的download属性值
+        a.download = DOWLOAD_FILE_NAME(url, filename)
+        // 触发点击事件
+        a.click()
+        // 释放
+        window.URL.revokeObjectURL(url)
+        // 获取成功
+        resolve()
+      }).catch((err) => {
+        // 获取失败
+        reject(err)
+      })
+    }).catch((err) => {
+      // 获取失败
+      reject(err)
+    })
+  })
+  // 简写方式：
+  // fetch(url).then(res => res.blob().then(blob => {
+  //   // 创建一个a节点
+  //   var a = document.createElement('a')
+  //   // 创建一个可供下载链接
+  //   var url = window.URL.createObjectURL(blob)
+  //   // 将需要下载的URL赋值给a节点的href
+  //   a.href = url
+  //   // 设置节点的download属性值
+  //   a.download = DOWLOAD_FILE_NAME(url, filename)
+  //   // 触发点击事件
+  //   a.click()
+  //   // 释放
+  //   window.URL.revokeObjectURL(url)
+  // }))
 }
 
 /**
@@ -157,18 +186,4 @@ export function DOWLOAD_FILE_NAME (url, filename) {
   // 返回
   return fname
 }
-/**
- * 不走代理，直接下载指定链接
- * @param {*} url 全链接
- * @param {*} fileName 文件名字
- */
-export function DOWLOAD_FILE_COMMON (url, fileName) {
-  fetch(url).then(res => res.blob().then(blob => {
-    var a = document.createElement('a')
-    var url = window.URL.createObjectURL(blob)
-    a.href = url
-    a.download = fileName
-    a.click()
-    window.URL.revokeObjectURL(url)
-  }))
-}
+
