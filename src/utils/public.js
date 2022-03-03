@@ -220,6 +220,47 @@ const Pub = {
     return type
   },
 
+  // ================================= 《 JSON 快 捷 取 值 》
+
+  // 获取指定 key 值
+  VALUE (obj, key) {
+    // 当前值
+    var value = undefined
+    // 是否有值
+    if (obj && key) {
+      // 赋值
+      value = obj
+      // 分析大括号
+      if (key.includes('[') || key.includes(']')) {
+        // 替换符号
+        if (key.includes('[')) {
+          key = key.replace(new RegExp('\\[', "gm"), '.')
+          key = key.replace(new RegExp('\\]', "gm"), '')
+        } else {
+          key = key.replace(new RegExp('\\]', "gm"), '.')
+        }
+      }
+      // 拆分
+      const keys = key.split('.')
+      // 过滤出来可用的 keys
+      const newKeys = []
+      // 过滤
+      keys.forEach(itemKey => {
+        // 有值则添加
+        if (itemKey.length) { newKeys.push(itemKey) }
+      })
+      // 取值
+      newKeys.some(itemKey => {
+        // 直接取值
+        if (value) { value = value[itemKey] }
+        // 是否停止
+        return !value
+      })
+    }
+    // 返回
+    return value
+  },
+
   // ================================= 《 时 间 日 期 》
 
   // 时间转字符串（今天，昨天，xx月xx日，xxxx年xx月xx日）
