@@ -19,12 +19,22 @@ const Pub = {
     window.open(routeData.href, '_blank')
   },
 
+  // 跳转到指定地址
+  JUMP_URL (url) {
+    window.location = url
+  },
+
   // 跳转到指定路由地址
   JUMP_ROUTER (path, query) {
     router.push({
       path: path,
       query: query
     })
+  },
+
+  // 当前域名
+  DOMAIN_NAME (path) {
+    return window.location.protocol + '//' + window.location.host + (path || '')
   },
 
   // ================================= 《 正 则 效 验 》
