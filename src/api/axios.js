@@ -11,6 +11,7 @@ const service = axios.create({
 })
 
 // 将 post 请求的 data 数据转换成 formdata 格式（请求数据设置为 params 不会被转换）
+// FormData：https://blog.csdn.net/zz00008888/article/details/113933885
 // service.defaults.transformRequest = data => {
 //   return Pub.FORM_DATA(data)
 // }
