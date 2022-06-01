@@ -12,6 +12,8 @@
     <!-- 预览组件 -->
     <a-button style="margin-top: 15px;" @click="touchPreview">预览组件、图片、视频、文件</a-button>
     <PreviewModal ref="preview-modal"></PreviewModal>
+    <!-- 跳转 layout 布局样式 -->
+    <a-button style="margin-top: 15px;" @click="touchLayout">跳转 Layout 布局样式（自定义菜单，菜单 icon 支持：自带icon、iconfont、本地icon）</a-button>
   </div>
 </template>
 
@@ -64,6 +66,10 @@ export default {
 
       // 后缀在文件中间的情况预览
       // this.$refs['preview-modal'].showModal('https://vprivate.hepai.video/local/private_video/8931135415d90e8aca799c81c084487f.mp4?e=1624260783&token=AciT33E89duMqx4Q_mkGN6SJ6bUDRkk-zRxN-v8P:BRIhB2UpzRwtthXr-JsdBVWoC4U=')
+    },
+    // 跳转 layout
+    touchLayout () {
+      this.$router.push('/layout')
     }
   }
 }
