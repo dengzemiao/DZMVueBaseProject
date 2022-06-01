@@ -1,11 +1,11 @@
-import axios from "axios"
-import VueAxios from "vue-axios"
-import Pub from "@/utils/public"
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import Pub from '@/utils/public'
 
 // 创建 axios 实例
 const service = axios.create({
   // api
-  baseURL: "",
+  baseURL: '',
   // 请求超时时间
   timeout: 90000
 })
@@ -21,7 +21,7 @@ service.interceptors.request.use(config => {
   // 在发送请求之前做些什么
   // 设置 Token 数据
   const token = Pub.ACCESS_TOKEN()
-  if (token) { config.headers["X-Token"] = token }
+  if (token) { config.headers['X-Token'] = token }
   return config
 })
 
