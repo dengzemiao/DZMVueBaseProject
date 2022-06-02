@@ -1,5 +1,5 @@
 // 导入自定义 Layout 布局
-import { BaseLayout } from '@/layouts'
+import { BaseLayout, RouterView } from '@/layouts'
 
 // 页面路由列表
 export const routes = [
@@ -10,9 +10,9 @@ export const routes = [
   },
   {
     path: '/layout',
+    redirect: '/home',
     component: BaseLayout,
     meta: { title: '首页', keepAlive: false },
-    redirect: '/home',
     children: [
       {
         path: '/home',
@@ -28,8 +28,8 @@ export const routes = [
       },
       {
         path: '/home3',
-        name: 'Home',
-        component: () => import('@/views/Home'),
+        redirect: '/home4',
+        component: RouterView,
         meta: { title: '首页3', keepAlive: false, icon: 'menu_0_nomal.png', sicon: 'menu_0_select.png', type: 2 },
         children: [
           {
