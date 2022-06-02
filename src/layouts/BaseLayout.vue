@@ -13,7 +13,7 @@
       ></Menu>
     </a-layout-sider>
     <!-- 右侧内容 -->
-    <a-layout>
+    <a-layout class="layout-sub">
       <!-- 右侧头部内容 -->
       <a-layout-header class="layout-header">
         <!-- 展开收起 -->
@@ -51,7 +51,10 @@ export default {
 </script>
 <style>
 #layout-main {
-  height: 100%;
+  min-height: 100%;
+}
+#layout-main .layout-sub {
+  overflow: hidden;
 }
 #layout-main .layout-trigger {
   font-size: 18px;
