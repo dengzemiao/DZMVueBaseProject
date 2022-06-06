@@ -13,7 +13,7 @@
       <!-- 便利菜单列表 -->
       <template v-for="item in menus">
         <!-- 有子菜单 -->
-        <a-sub-menu :key="item.path" v-if="item.children">
+        <a-sub-menu :key="item.path" v-if="item.children && !item.hidden">
           <!-- 分组栏 -->
           <MenuItem
             slot="title"

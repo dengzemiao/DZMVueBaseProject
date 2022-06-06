@@ -13,6 +13,7 @@ export const routes = [
     redirect: '/home',
     component: BaseLayout,
     meta: { title: '首页', keepAlive: false },
+    // hidden: true
     children: [
       {
         path: '/home',
