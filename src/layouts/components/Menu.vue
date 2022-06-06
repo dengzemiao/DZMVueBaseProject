@@ -24,7 +24,7 @@
           <!-- 便利子菜单 -->
           <template v-for="child in (item.children || [])">
             <!-- 子菜单元素 -->
-            <a-menu-item :key="child.path">
+            <a-menu-item :key="child.path" v-if="!child.hidden">
               <MenuItem
                 :data="child"
                 :hoverPath="hoverPath"
@@ -34,13 +34,15 @@
           </template>
         </a-sub-menu>
         <!-- 没有子菜单 -->
-        <a-menu-item :key="item.path" v-else>
-          <MenuItem
-          :data="item"
-          :hoverPath="hoverPath"
-          :selectPath="selectPath"
-        ></MenuItem>
-        </a-menu-item>
+        <template v-else>
+          <a-menu-item :key="item.path" v-if="!item.hidden">
+            <MenuItem
+            :data="item"
+            :hoverPath="hoverPath"
+            :selectPath="selectPath"
+          ></MenuItem>
+          </a-menu-item>
+        </template>
       </template>
     </a-menu>
   </div>

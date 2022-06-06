@@ -19,6 +19,7 @@ export const routes = [
         name: 'Home',
         component: () => import('@/views/Home'),
         meta: { title: '首页1', keepAlive: false, icon: 'home' }
+        // hidden: true
       },
       {
         path: '/home2',
