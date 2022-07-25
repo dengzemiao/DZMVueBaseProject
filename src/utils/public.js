@@ -95,22 +95,6 @@ const Pub = {
     return decimalLength > maxLength
   },
 
-  // ================================= 《 小 数 点 处 理 》
-
-  // 检查小数点是否超过指定个数 true: 超过 false：没超过
-  CHECK_NUMBER_DECIMAL (value, maxLength) {
-    // 转为字符串
-    var valueString = `${(value || '')}`
-    // 小数长度
-    var decimalLength = 0
-    // 是否存在小数点
-    if (valueString.includes('.')) {
-      // 获取小数长度
-      decimalLength = valueString.split('.')[1].length
-    }
-    return decimalLength > maxLength
-  },
-
   // 保留小数点位数
   // value: 数值，支持字符串
   // decimal：保留小数点位数
