@@ -1,4 +1,4 @@
-import { axios } from '@/api/axios'
+import axios from '@/api/axios'
 
 // 服务器代理地址
 const BASE_URL = process.env.VUE_APP_BASE_URL
