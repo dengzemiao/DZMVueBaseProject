@@ -11,14 +11,14 @@
       :fileList="fileList"
       :beforeUpload="beforeUpload"
       :customRequest="customRequest"
-      :remove="remove"
+      @remove="remove"
     >
       <!-- 自定义上传组件 -->
       <slot name="up-slot" :disabled="disabled">
         <!-- icon -->
         <p class="ant-upload-drag-icon">
           <!-- 上传 icon -->
-          <slot name="up-icon"><a-icon type="inbox" /></slot>
+          <slot name="up-icon"><inbox-outlined /></slot>
         </p>
         <!-- 文案 -->
         <p class="ant-upload-text">
@@ -42,14 +42,14 @@
       :fileList="fileList"
       :beforeUpload="beforeUpload"
       :customRequest="customRequest"
-      :remove="remove"
+      @remove="remove"
     >
       <!-- 自定义上传组件 -->
       <slot name="up-slot" :disabled="disabled">
         <!-- 上传按钮 -->
         <a-button :disabled="disabled">
           <!-- 上传 icon -->
-          <slot name="up-icon"><a-icon type="upload" /></slot>
+          <slot name="up-icon"><upload-outlined /></slot>
           <!-- 上传文案 -->
           <slot name="up-title">上传文件</slot>
         </a-button>

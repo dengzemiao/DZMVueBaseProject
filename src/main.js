@@ -22,6 +22,7 @@ moment.locale('zh-cn')
 // Antd
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+import * as Icons from '@ant-design/icons-vue'
 
 // 创建对象
 const app = createApp(App)
@@ -29,8 +30,12 @@ const app = createApp(App)
 app.use(store).use(router).use(Antd).mount('#app')
 // 必须使用 nextTick，不然会有加载顺序问题，导致绑定失败
 nextTick(() => {
+  // 配置全局对象
   app.config.globalProperties.$pub = Pub
+  app.config.globalProperties.$icons = Icons
   app.config.globalProperties.$moment = moment
+  // Antd 注入全部图标
+  for (const key in Icons) { app.component(key, Icons[key]) }
 })
 // 导出
 // export default app
