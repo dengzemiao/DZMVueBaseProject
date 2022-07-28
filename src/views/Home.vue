@@ -2,6 +2,7 @@
   <div class="container-full-column-center">
     <span>BASE PROJECT</span>
     <span>Vue 3.x</span>
+    <a-date-picker />
   </div>
 </template>
 
