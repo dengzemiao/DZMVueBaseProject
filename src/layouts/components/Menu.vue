@@ -3,11 +3,11 @@
     <!-- 菜单 -->
     <a-menu
       class="menu-content"
-      :selectedKeys="selectedKeys"
-      :open-keys.sync="openKeys"
+      v-model:openKeys="openKeys"
+      v-model:selectedKeys="selectedKeys"
       :mode="mode"
       :theme="theme"
-      :inlineCollapsed="collapsed"
+      :inline-collapsed="collapsed"
       @openChange="openChange"
     >
       <!-- 便利菜单列表 -->
