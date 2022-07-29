@@ -17,7 +17,6 @@
           <!-- 分组栏 -->
           <template #title>
             <MenuItem
-              slot="title"
               :data="item"
               :hoverPath="hoverPath"
               :selectPath="selectPath"
