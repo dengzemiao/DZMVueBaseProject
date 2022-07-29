@@ -2,7 +2,7 @@
   <!-- 主视图 -->
   <a-layout id="layout-main">
     <!-- 左侧菜单 -->
-    <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
+    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <!-- logo -->
       <div class="layout-logo" />
       <!-- 中间内容菜单 -->

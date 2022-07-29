@@ -7,7 +7,6 @@
       v-model:selectedKeys="selectedKeys"
       :mode="mode"
       :theme="theme"
-      :inline-collapsed="collapsed"
       @openChange="openChange"
     >
       <!-- 便利菜单列表 -->
