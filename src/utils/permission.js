@@ -1,10 +1,11 @@
 import router from '@/router'
 import Pub from '@/utils/public'
+const version = require('@/utils/version')
 
 // 白名单
 const whiteList = ['/login', '/check']
 
-// 路由守卫
+// 路由跳转前执行
 router.beforeEach((to, from, next) => {
 
   // 默认
@@ -29,4 +30,11 @@ router.beforeEach((to, from, next) => {
   //   }
   // }
   
+})
+
+// 路由跳转后执行
+router.afterEach((to, from) => {
+  // 如果不想每个路由都检查是否有新版本，只需要在特定的页面才需要检查版本，可以在这里做白名单判断
+  // 兼容版本，如果是新版本则进行刷新并缓存
+  version.getPro()
 })

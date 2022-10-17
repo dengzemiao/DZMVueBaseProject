@@ -1,3 +1,7 @@
+// 在 build 时，每次创建/更新版本文件
+const verify = require('./src/utils/version')
+verify.create()
+// 其他配置
 module.exports = {
   devServer: {
     // 端口号
