@@ -325,11 +325,21 @@ const Pub = {
   },
 
   // (获取 || 设置) token
-  ACCESS_TOKEN(token) {
-    if (token === undefined) {
-      return localStorage.getItem('token')
+  ACCESS_TOKEN(value) {
+    return this.CUSTOM('token', value)
+  },
+
+  // (获取 || 设置) userinfo
+  USER_INFO(value) {
+    return this.CUSTOM('userinfo', value)
+  },
+
+  // (获取 || 设置) 自定义字段
+  CUSTOM(key, value) {
+    if (value === undefined) {
+      return localStorage.getItem(key)
     } else {
-      return localStorage.setItem('token', token)
+      return localStorage.setItem(key, value)
     }
   }
 }
