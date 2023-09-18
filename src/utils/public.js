@@ -310,13 +310,17 @@ const Pub = {
 
   // 项目运行环境
   IS_DEBUG() {
-    // 判断是否为正式域名地址
-    if (window.location.host === 'task.hepai.video') {
-      // 线上环境
-      return false
-    } else {
+    // 当前 host
+    const host = window.location.host
+    // 域名中包含指定标识，为测试环境
+    // if (host.includes('localhost') || host.includes('test.')) {
+    // 不等于正式域名，为测试环境
+    if (host !== 'task.hepai.video') {
       // 调试环境
       return true
+    } else {
+      // 线上环境
+      return false
     }
   },
 
