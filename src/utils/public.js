@@ -6,12 +6,12 @@ const Pub = {
   // ================================= 《 路 由 跳 转 》
 
   // 新窗口访问链接
-  OPEN_URL (url) {
+  OPEN_URL(url) {
     window.open(url, '_blank')
   },
 
   // 新窗口访问路由地址
-  OPEN_ROUTER (path, query) {
+  OPEN_ROUTER(path, query) {
     const routeData = router.resolve({
       path: path,
       query: query
@@ -20,12 +20,12 @@ const Pub = {
   },
 
   // 跳转到指定地址
-  JUMP_URL (url) {
+  JUMP_URL(url) {
     window.location = url
   },
 
   // 跳转到指定路由地址
-  JUMP_ROUTER (path, query) {
+  JUMP_ROUTER(path, query) {
     router.push({
       path: path,
       query: query
@@ -33,14 +33,14 @@ const Pub = {
   },
 
   // 当前域名
-  DOMAIN_NAME (path) {
+  DOMAIN_NAME(path) {
     return window.location.protocol + '//' + window.location.host + (path || '')
   },
 
   // ================================= 《 正 则 效 验 》
 
   // 正则匹配是否存在
-  REG_TEST (reg, value) {
+  REG_TEST(reg, value) {
     var re = new RegExp(reg)
     if (re.test(value)) {
       return true
@@ -50,49 +50,59 @@ const Pub = {
   },
 
   // 删除字符串全部空格
-  STRING_SPACE_ALL (str) {
+  STRING_SPACE_ALL(str) {
     return str.replace(/\s/g, '')
   },
 
   // 删除字符串左右空格
-  STRING_SPACE_LR (str) {
+  STRING_SPACE_LR(str) {
     return str.replace(/(^\s*)|(\s*$)/g, '')
   },
 
   // 删除字符串左边空格
-  STRING_SPACE_L (str) {
+  STRING_SPACE_L(str) {
     return str.replace(/(^\s*)/g, '')
   },
 
   // 删除字符串右边空格
-  STRING_SPACE_R (str) {
+  STRING_SPACE_R(str) {
     return str.replace(/(\s*$)/g, '')
   },
 
   // 判断是否为正数（允许小数点，不能为负数）
-  REG_IS_NUMBER (value) {
+  REG_IS_NUMBER(value) {
     return (this.REG_TEST(/^\d+(\.\d+)?$/, value))
   },
 
-  // 判断是否为正整数
-  REG_IS_INTEGER (value) {
+  // 判断是否为正数（允许小数点，最多2位，不能为负数）
+  REG_IS_NUMBER_FLOAT2(value) {
+    return (this.REG_TEST(/^\d+(?:\.\d{1,2})?$/, value))
+  },
+
+  // 判断是否为正整数（包含 0）
+  REG_IS_INTEGER(value) {
     return (this.REG_TEST(/^\d+$/, value))
   },
 
+  // 判断是否为正整数（不包含 0）
+  REG_IS_INTEGER_POSITIVE(value) {
+    return (this.REG_TEST(/(^[1-9]\d*$)/, value))
+  },
+
   // 判断是否为手机号
-  REG_IS_PHONE (value) {
+  REG_IS_PHONE(value) {
     return (this.REG_TEST(/^1[3456789]\d{9}$/, value))
   },
 
   // 判断是否为邮箱
-  REG_IS_EMAIL (value) {
+  REG_IS_EMAIL(value) {
     return (this.REG_TEST(/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/, value))
   },
 
   // ================================= 《 小 数 点 处 理 》
 
   // 检查小数点是否超过指定个数 true: 超过 false：没超过
-  CHECK_NUMBER_DECIMAL (value, maxLength) {
+  CHECK_NUMBER_DECIMAL(value, maxLength) {
     // 转为字符串
     var valueString = `${(value || '')}`
     // 小数长度
@@ -111,7 +121,7 @@ const Pub = {
   // isNumber：是否转为 Number，默认 String
   // isComplete：小数点不够时，是否用 0 尾部进行补全
   // completeMax：补全最大数限制，0：按实际补全，也就是小数点差几位补几位
-  KEEP_NUMBER_DECIMAL (value, decimal, isNumber, isComplete, completeMax = 0) {
+  KEEP_NUMBER_DECIMAL(value, decimal, isNumber, isComplete, completeMax = 0) {
     // 字符串
     var valueString = `${value || 0}`
     // 保留小数点位数
@@ -155,7 +165,7 @@ const Pub = {
   // ================================= 《 文 件 路 径 处 理 》
 
   // 是否为图片
-  FILE_IS_IMAGE (filePath, isFuzzy = true) {
+  FILE_IS_IMAGE(filePath, isFuzzy = true) {
     // 后缀列表（如果缺少自行补充）
     const types = ['png', 'jpg', 'jpeg', 'bmp', 'gif', 'webp', 'psd', 'svg', 'tiff']
     // 返回匹配结果
@@ -163,7 +173,7 @@ const Pub = {
   },
 
   // 是否为视频
-  FILE_IS_VIDEO (filePath, isFuzzy = true) {
+  FILE_IS_VIDEO(filePath, isFuzzy = true) {
     // 后缀列表（如果缺少自行补充）
     const types = ['mp4', 'mp3', 'avi', 'wmv', 'mpg', 'mpeg', 'mov', 'rm', 'ram', 'swf', 'flv', 'wma', 'avi', 'rmvb', 'mkv']
     // 返回匹配结果
@@ -171,7 +181,7 @@ const Pub = {
   },
 
   // 检查文件后缀是否为存在指定格式列表中（isFuzzy：如果正常匹配失败，是否允许使用模糊匹配二次匹配）
-  FILE_IS_TYPE (filePath, types, isFuzzy = true) {
+  FILE_IS_TYPE(filePath, types, isFuzzy = true) {
     // 匹配结果
     var isResult = false
     // 路径有值 && 格式列表有值
@@ -200,7 +210,7 @@ const Pub = {
   },
 
   // 获取路径后缀（不带 '.'）
-  FILE_EXTENSION (filePath) {
+  FILE_EXTENSION(filePath) {
     // 后缀类型
     var type = ''
     // 路径有值
@@ -217,7 +227,7 @@ const Pub = {
   // ================================= 《 JSON 快 捷 取 值 》
 
   // 获取指定 key 值
-  VALUE (obj, key) {
+  VALUE(obj, key) {
     // 当前值
     var value = undefined
     // 是否有值
@@ -259,7 +269,7 @@ const Pub = {
 
   // 时间转字符串（今天，昨天，xx月xx日，xxxx年xx月xx日）
   // calendars：用于覆盖配置
-  DATE_STRING (dateString, format = 'YYYY-MM-DD HH:mm:ss', calendars = {}) {
+  DATE_STRING(dateString, format = 'YYYY-MM-DD HH:mm:ss', calendars = {}) {
     // 配置格式
     moment.updateLocale('zh-cn', {
       calendar: {
@@ -287,7 +297,7 @@ const Pub = {
   },
 
   // 指定的日期时间是否 <= 今天
-  DATE_COMPARE_TODAY (dateString, format = 'YYYY-MM-DD HH:mm:ss') {
+  DATE_COMPARE_TODAY(dateString, format = 'YYYY-MM-DD HH:mm:ss') {
     // 将日期转换为 date 格式
     const date = moment(dateString, format).format('YYYYMMDD')
     // 获取今天 date 格式
@@ -299,7 +309,7 @@ const Pub = {
   // ================================= 《 针 对 项 目 自 定 义 》
 
   // 项目运行环境
-  IS_DEBUG () {
+  IS_DEBUG() {
     // 判断是否为正式域名地址
     if (window.location.host === 'task.hepai.video') {
       // 线上环境
@@ -311,7 +321,7 @@ const Pub = {
   },
 
   // (获取 || 设置) token
-  ACCESS_TOKEN (token) {
+  ACCESS_TOKEN(token) {
     if (token === undefined) {
       return localStorage.getItem('token')
     } else {
