@@ -760,7 +760,7 @@ export default {
               var isWidth = (imgWidth % this.imgScaleWidth) === 0
               var isHeight = (imgHeight % this.imgScaleHeight) === 0
               // 判断检测结果
-              if (!isWidth && !isHeight) {
+              if (!isWidth || !isHeight) {
                 // 是否允许抛出错误
                 if (!this.isExistErrorUploadId(uploadId)) {
                   // 有错误回调
