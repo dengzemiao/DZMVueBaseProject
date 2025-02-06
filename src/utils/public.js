@@ -310,22 +310,36 @@ const Pub = {
 
   // 项目运行环境
   IS_DEBUG() {
-    // 判断是否为正式域名地址
-    if (window.location.host === 'task.hepai.video') {
-      // 线上环境
-      return false
-    } else {
+    // 当前 host
+    const host = window.location.host
+    // 域名中包含指定标识，为测试环境
+    // if (host.includes('localhost') || host.includes('test.')) {
+    // 不等于正式域名，为测试环境
+    if (host !== 'task.hepai.video') {
       // 调试环境
       return true
+    } else {
+      // 线上环境
+      return false
     }
   },
 
   // (获取 || 设置) token
-  ACCESS_TOKEN(token) {
-    if (token === undefined) {
-      return localStorage.getItem('token')
+  ACCESS_TOKEN(value) {
+    return this.CUSTOM('token', value)
+  },
+
+  // (获取 || 设置) userinfo
+  USER_INFO(value) {
+    return this.CUSTOM('userinfo', value)
+  },
+
+  // (获取 || 设置) 自定义字段
+  CUSTOM(key, value) {
+    if (value === undefined) {
+      return localStorage.getItem(key)
     } else {
-      return localStorage.setItem('token', token)
+      return localStorage.setItem(key, value)
     }
   }
 }
