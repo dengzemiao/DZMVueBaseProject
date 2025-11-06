@@ -139,13 +139,69 @@ const Pub = {
     return String(str || '').replace(/[\s\n\r\t]/g, '')
   },
 
-  // ================================= 《 针对项目自定义 》
+  // ================================= 《 存储管理 》
 
-  // 项目运行环境
+  // (获取 || 设置) token
+  accessToken(value) {
+    return this.storage('token', value)
+  },
+
+  // (获取 || 设置) userinfo
+  userInfo(value) {
+    return this.storageJSON('userinfo', value)
+  },
+
+  // (获取 || 设置) 自定义字段（字符串）
+  storage(key, value) {
+    if (value === undefined) {
+      return localStorage.getItem(key)
+    } else {
+      localStorage.setItem(key, value)
+      return value
+    }
+  },
+
+  // (获取 || 设置) 自定义字段（JSON 对象）
+  storageJSON(key, value) {
+    if (value === undefined) {
+      const item = localStorage.getItem(key)
+      if (!item) return null
+      try {
+        return JSON.parse(item)
+      } catch (e) {
+        console.error(`解析 ${key} 失败:`, e)
+        return null
+      }
+    } else {
+      try {
+        const jsonStr = JSON.stringify(value)
+        localStorage.setItem(key, jsonStr)
+        return value
+      } catch (e) {
+        console.error(`存储 ${key} 失败:`, e)
+        return null
+      }
+    }
+  },
+
+  // 删除存储
+  removeStorage(key) {
+    localStorage.removeItem(key)
+  },
+
+  // 清空所有存储
+  clearStorage() {
+    localStorage.clear()
+  },
+
+  // ================================= 《 环境判断 》
+
+  // 项目运行环境（可根据实际项目修改域名）
   isDebug() {
     // 当前 host
     const host = window.location.host
     // 不等于正式域名，为测试环境
+    // 可根据实际项目修改正式域名
     if (host !== 'task.hepai.video') {
       // 调试环境
       return true
@@ -155,24 +211,18 @@ const Pub = {
     }
   },
 
-  // (获取 || 设置) token
-  accessToken(value) {
-    return this.storage('token', value)
+  // 判断是否为开发环境
+  isDev() {
+    return import.meta.env.DEV
   },
 
-  // (获取 || 设置) userinfo
-  userInfo(value) {
-    return this.storage('userinfo', value)
+  // 判断是否为生产环境
+  isProd() {
+    return import.meta.env.PROD
   },
 
-  // (获取 || 设置) 自定义字段
-  storage(key, value) {
-    if (value === undefined) {
-      return localStorage.getItem(key)
-    } else {
-      return localStorage.setItem(key, value)
-    }
-  },
+  // ================================= 《 针对项目自定义 》
+
 }
 
 export default Pub
