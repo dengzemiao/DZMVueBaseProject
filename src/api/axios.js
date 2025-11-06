@@ -3,10 +3,10 @@ import Pub from '@/utils/public'
 
 // 创建 axios 实例
 const service = axios.create({
-  // api
-  baseURL: '',
-  // 请求超时时间
-  timeout: 90000
+  // api - 从环境变量配置获取
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  // 请求超时时间（单位：毫秒，默认30秒）
+  timeout: 30000
 })
 
 // 将 post 请求的 data 数据转换成 formdata 格式（请求数据设置为 params 不会被转换）
@@ -19,7 +19,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   // 在发送请求之前做些什么
   // 设置 Token 数据
-  const token = Pub.ACCESS_TOKEN()
+  const token = Pub.accessToken()
   if (token) { config.headers['X-Token'] = token }
   return config
 })
