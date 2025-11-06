@@ -21,7 +21,7 @@
       </template>
     </template>
     <!-- 标题 -->
-    <span>{{ data.meta.title }}</span>
+    <span class="menu-title">{{ data.meta.title }}</span>
   </div>
 </template>
 
@@ -185,15 +185,22 @@ onMounted(() => {
   width: 16px;
   height: 16px;
   margin-right: 10px;
+  vertical-align: middle;
 }
 .menu-custom .iconfont {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 10px;
+  vertical-align: middle;
 }
 .menu-custom :deep(.anticon) {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 10px;
   font-size: 16px;
+  vertical-align: middle;
 }
 .menu-custom > span:last-child {
   margin-inline-start: 0 !important;

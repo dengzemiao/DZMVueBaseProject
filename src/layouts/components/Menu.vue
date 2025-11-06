@@ -222,8 +222,9 @@ onMounted(() => {
 .menu-view .ant-menu-inline {
   border: none !important;
 }
-.menu-view .ant-menu-inline-collapsed .ant-menu-item .menu-custom>span,
-.menu-view .ant-menu-inline-collapsed .ant-menu-submenu .menu-custom>span {
+/* 收起时只隐藏文字标题，保留所有图标（img、component、iconfont） */
+.menu-view .ant-menu-inline-collapsed .ant-menu-item .menu-custom .menu-title,
+.menu-view .ant-menu-inline-collapsed .ant-menu-submenu .menu-custom .menu-title {
   opacity: 0;
 }
 </style>
