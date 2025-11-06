@@ -1,22 +1,138 @@
-.DS_Store
+# ================================= 《 依赖和包管理 》
 node_modules
-/dist
+.pnp
+.pnp.js
 
-# local env files
+# ================================= 《 构建产物 》
+dist
+dist-ssr
+*.local
+build
+.vite
+
+# ================================= 《 环境变量文件 》
+.env
 .env.local
 .env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Log files
+# ================================= 《 日志文件 》
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# Editor directories and files
+# ================================= 《 编辑器配置 》
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# WebStorm / IntelliJ IDEA
 .idea
-.vscode
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ================================= 《 操作系统文件 》
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ================================= 《 测试覆盖率 》
+coverage
+*.lcov
+.nyc_output
+
+# ================================= 《 缓存和临时文件 》
+.cache
+.parcel-cache
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+*.tsbuildinfo.*
+
+# ================================= 《 测试文件 》
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+/cypress/downloads/
+
+# Vitest
+__screenshots__/
+coverage/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# ================================= 《 其他 》
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+*.bak
+*.tmp
+*.temp
