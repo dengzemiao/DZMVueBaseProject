@@ -19,6 +19,8 @@
               :data="item"
               :hoverPath="hoverPath"
               :selectPath="selectPath"
+              :iconSize="iconSize"
+              :iconStyle="iconStyle"
             ></MenuItem>
           </template>
           <!-- 便利子菜单 -->
@@ -29,6 +31,8 @@
                 :data="child"
                 :hoverPath="hoverPath"
                 :selectPath="selectPath"
+                :iconSize="iconSize"
+                :iconStyle="iconStyle"
               ></MenuItem>
             </a-menu-item>
           </template>
@@ -37,10 +41,12 @@
         <template v-else>
           <a-menu-item :key="item.path" v-if="!item.hidden">
             <MenuItem
-            :data="item"
-            :hoverPath="hoverPath"
-            :selectPath="selectPath"
-          ></MenuItem>
+              :data="item"
+              :hoverPath="hoverPath"
+              :selectPath="selectPath"
+              :iconSize="iconSize"
+              :iconStyle="iconStyle"
+            ></MenuItem>
           </a-menu-item>
         </template>
       </template>
@@ -51,6 +57,13 @@
 <script setup>
 /**
  * 菜单图标配置说明（自动识别，可以类型混搭）
+ * 
+ * Props 参数：
+ * @param {Array} menus - 菜单列表（必需）
+ * @param {String} theme - 主题（默认 'dark'）
+ * @param {String} mode - 模式（默认 'inline'）
+ * @param {Number|String} iconSize - 图标大小，单位 px（默认 18）
+ * @param {Object} iconStyle - 图标样式对象，如 { color: '#1890ff', fontWeight: 'bold' }（默认 {}）
  * 
  * 在路由配置的 meta 中设置图标相关属性，系统会自动识别图标类型。
  * 
@@ -76,15 +89,16 @@
  *   - 需要导入：import { HomeOutlined, MenuOutlined } from '@ant-design/icons-vue'
  * 
  * 3. 本地图片
- *   - 传入图片文件名（需放在 src/assets/img/ 目录下）
+ *   - 传入图片文件名（需放在 @/assets/img/ 目录下）
  *   - 必须包含文件后缀：.png, .jpg, .jpeg, .gif, .svg, .webp, .bmp, .ico
  *   - 示例：meta: { icon: 'menu_0_nomal.png', sicon: 'menu_0_select.png' }
  *   - 图片要求：16*16 像素，透明底色（推荐）
  * 
  * 4. iconfont 图标
- *   - 传入 iconfont 的 class 名称（字符串，无文件后缀）
+ *   - 传入 iconfont 的 Font class 名称（字符串，无文件后缀），不支持 Unicode、Symbol 格式，需要放在 @/assets/iconfont/ 样式文件中
  *   - 示例：meta: { icon: 'icon-home', sicon: 'icon-home-active' }
  *   - 使用方式：<span class="iconfont icon-home"></span>
+ *   - 需要导入 iconfont 样式文件：import '@/assets/iconfont/iconfont.css'
  * 
  * 使用示例：
  * // 本地图片
@@ -104,11 +118,6 @@ import { useRoute } from 'vue-router'
 import MenuItem from './MenuItem.vue'
 
 const props = defineProps({
-  // 展开 || 收起
-  collapsed: {
-    type: Boolean,
-    default: false
-  },
   // 菜单列表
   menus: {
     type: Array,
@@ -125,10 +134,15 @@ const props = defineProps({
     type: String,
     default: 'inline'
   },
-  // 标题
-  title: {
-    type: String,
-    default: ''
+  // 图标大小（单位：px，默认 18px）
+  iconSize: {
+    type: [Number, String],
+    default: 18
+  },
+  // 图标样式（CSS 对象，如 { color: '#1890ff', fontWeight: 'bold' }）
+  iconStyle: {
+    type: Object,
+    default: () => ({})
   }
 })
 

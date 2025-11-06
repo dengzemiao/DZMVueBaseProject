@@ -10,6 +10,9 @@ import '@/assets/css/common.css'
 // 权限守卫
 import '@/utils/permission'
 
+// iconfont
+import '@/assets/iconfont/iconfont.css'
+
 // Antd
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css';

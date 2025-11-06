@@ -8,7 +8,6 @@
       <!-- 中间内容菜单 -->
       <Menu
         class="layout-menu"
-        :collapsed="collapsed"
         :menus="menus"
       ></Menu>
     </a-layout-sider>

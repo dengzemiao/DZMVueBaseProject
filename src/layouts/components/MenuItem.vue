@@ -5,19 +5,21 @@
     <template v-if="currentIconValue">
       <!-- 1. 网络图片（最高优先级） -->
       <template v-if="isNetworkImage(currentIconValue)">
-        <img class="menu-img" :src="currentIconValue">
+        <img class="menu-img" :src="currentIconValue" :style="imageStyleObj">
       </template>
       <!-- 2. Ant Design Vue 组件 -->
       <template v-else-if="isComponent(currentIconValue)">
-        <component :is="getIconComponent(currentIconValue)" />
+        <span class="menu-icon-component" :style="iconStyleObj">
+          <component :is="getIconComponent(currentIconValue)" />
+        </span>
       </template>
       <!-- 3. 本地图片（有文件后缀） -->
       <template v-else-if="isLocalImage(currentIconValue)">
-        <img class="menu-img" :src="locationAssets(currentIconValue)">
+        <img class="menu-img" :src="locationAssets(currentIconValue)" :style="imageStyleObj">
       </template>
       <!-- 4. iconfont（字符串且无文件后缀） -->
       <template v-else-if="typeof currentIconValue === 'string'">
-        <span :class="`iconfont ${currentIconValue}`"></span>
+        <span :class="`iconfont ${currentIconValue}`" :style="iconStyleObj"></span>
       </template>
     </template>
     <!-- 标题 -->
@@ -47,6 +49,16 @@ const props = defineProps({
   selectPath: {
     type: String,
     default: ''
+  },
+  // 图标大小（单位：px，默认 18px）
+  iconSize: {
+    type: [Number, String],
+    default: 18
+  },
+  // 图标样式（CSS 对象，如 { color: '#1890ff', fontWeight: 'bold' }）
+  iconStyle: {
+    type: Object,
+    default: () => ({})
   }
 })
 
@@ -67,6 +79,28 @@ const currentIconValue = computed(() => {
   }
   // 默认显示 icon
   return props.data.meta.icon || ''
+})
+
+// 图标大小（转换为字符串）
+const iconSizeStr = computed(() => {
+  return typeof props.iconSize === 'number' ? `${props.iconSize}px` : props.iconSize
+})
+
+// 图片样式对象（只包含 width 和 height）
+const imageStyleObj = computed(() => {
+  return {
+    width: iconSizeStr.value,
+    height: iconSizeStr.value,
+    ...props.iconStyle
+  }
+})
+
+// 字体图标样式对象（包含 fontSize 和其他样式）
+const iconStyleObj = computed(() => {
+  return {
+    fontSize: iconSizeStr.value,
+    ...props.iconStyle
+  }
 })
 
 // 判断是否为网络图片
@@ -182,10 +216,11 @@ onMounted(() => {
 }
 .menu-custom .menu-img {
   display: inline-block;
-  width: 16px;
-  height: 16px;
   margin-right: 10px;
   vertical-align: middle;
+  /* 默认大小通过 iconSize prop 控制，内联样式会覆盖 */
+  width: auto;
+  height: auto;
 }
 .menu-custom .iconfont {
   display: inline-flex;
@@ -193,14 +228,23 @@ onMounted(() => {
   justify-content: center;
   margin-right: 10px;
   vertical-align: middle;
+  /* 默认大小通过 iconSize prop 控制，内联样式会覆盖 */
+  font-size: inherit;
 }
-.menu-custom :deep(.anticon) {
+.menu-custom .menu-icon-component {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-right: 10px;
-  font-size: 16px;
   vertical-align: middle;
+}
+.menu-custom .menu-icon-component :deep(.anticon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  /* 大小通过父元素的 fontSize 控制 */
+  font-size: inherit;
 }
 .menu-custom > span:last-child {
   margin-inline-start: 0 !important;
