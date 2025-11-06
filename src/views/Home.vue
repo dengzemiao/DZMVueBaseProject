@@ -1,7 +1,8 @@
 <template>
   <div class="container">
+    <!-- 版本信息 -->
     <div>Base Project</div>
-    <div>Vite + Vue 3.x</div>
+    <div style="margin-top: 8px;">Vite + Vue 3.x</div>
   </div>
 </template>
 
