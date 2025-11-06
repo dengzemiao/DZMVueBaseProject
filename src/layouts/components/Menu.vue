@@ -48,7 +48,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 /**
  * 菜单图标配置说明（自动识别，可以类型混搭）
  * 
@@ -99,130 +99,123 @@
  * // 网络图片
  * meta: { icon: 'https://example.com/icon.png' }
  */
+import { ref, watch, onMounted, onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
 import MenuItem from './MenuItem.vue'
-export default {
-  components: {
-    MenuItem
+
+const props = defineProps({
+  // 展开 || 收起
+  collapsed: {
+    type: Boolean,
+    default: false
   },
-  props: {
-    // 展开 || 收起
-    collapsed: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    // 菜单列表
-    menus: {
-      type: Array,
-      required: true,
-      default: () => []
-    },
-    // 主题
-    theme: {
-      type: String,
-      required: false,
-      default: 'dark'
-    },
-    // 模式
-    mode: {
-      type: String,
-      required: false,
-      default: 'inline'
-    },
-    // 标题
-    title: {
-      type: String,
-      required: false,
-      default: ''
-    }
+  // 菜单列表
+  menus: {
+    type: Array,
+    required: true,
+    default: () => []
   },
-  // 监听路由变化
-  watch: {
-    // 监听路由
-    $route: {
-      handler (newData) {
-        // 记录当前选中的路由地址
-        this.selectPath = newData.path
-        // 选中菜单路由
-        this.selectedKeys = [this.selectPath]
-      },
-      immediate: true
-    }
+  // 主题
+  theme: {
+    type: String,
+    default: 'dark'
   },
-  data() {
-    return {
-      // hover 路由地址
-      hoverPath: '',
-      // 当前选中的路由地址
-      selectPath: '',
-      // 选中的路由
-      selectedKeys: [],
-      // 展开菜单
-      openKeys: []
-    }
+  // 模式
+  mode: {
+    type: String,
+    default: 'inline'
   },
-  created () {
-    // 初始化展开菜单
-    this.reloadOpenKeys()
-  },
-  mounted () {
-    // 刷新 hover 对象
-    this.reloadHoverEls()
-  },
-  methods: {
-    // 展开/关闭回调
-    openChange () {
-      // 刷新 hover 对象
-      setTimeout(() => { this.reloadHoverEls() }, 100);
-    },
-    // 刷新 hover 对象
-    reloadHoverEls () {
-      // 获取所有 ant-menu-item
-      const menuItems = Array.from(document.getElementsByClassName('ant-menu-item'))
-      const menuSubs = Array.from(document.getElementsByClassName('ant-menu-submenu-title'))
-      // 新增 hover
-      menuItems.forEach(item => {
-        // 移入元素
-        item.onmouseenter = () => { this.mouseover(item) }
-        // 移出元素
-        item.onmouseleave = () => { this.mouseout(item) }
-      })
-      // 新增 hover
-      menuSubs.forEach(item => {
-        // 移入元素
-        item.onmouseenter = () => { this.mouseover(item) }
-        // 移出元素
-        item.onmouseleave = () => { this.mouseout(item) }
-      })
-    },
+  // 标题
+  title: {
+    type: String,
+    default: ''
+  }
+})
+
+const route = useRoute()
+
+// hover 路由地址
+const hoverPath = ref('')
+// 当前选中的路由地址
+const selectPath = ref('')
+// 选中的路由
+const selectedKeys = ref([])
+// 展开菜单
+const openKeys = ref([])
+
+// 展开/关闭回调
+const openChange = () => {
+  // 刷新 hover 对象
+  setTimeout(() => { reloadHoverEls() }, 100)
+}
+
+// 刷新 hover 对象
+const reloadHoverEls = () => {
+  // 获取所有 ant-menu-item
+  const menuItems = Array.from(document.getElementsByClassName('ant-menu-item'))
+  const menuSubs = Array.from(document.getElementsByClassName('ant-menu-submenu-title'))
+  // 新增 hover
+  menuItems.forEach(item => {
     // 移入元素
-    mouseover (el) {
-      // 获取 menu-custom
-      const menuCustom = Array.from(el.getElementsByClassName('menu-custom'))[0]
-      // 获取 path
-      const path = menuCustom.dataset.path
-      // 记录 path
-      this.hoverPath = path
-    },
+    item.onmouseenter = () => { mouseover(item) }
     // 移出元素
-    mouseout () {
-      // 清空路由对象
-      this.hoverPath = ''
-    },
-    // 展开菜单
-    reloadOpenKeys () {
-      // 初始化展开菜单
-      const matched = Array.from(this.$route.matched)
-      // 是否等于 3 个，说明有需要展开的菜单
-      if (matched.length === 3) {
-        // 需要展开的菜单
-        const path = matched[1].path
-        // 展开
-        this.openKeys = [path]
-      }
-    }
+    item.onmouseleave = () => { mouseout(item) }
+  })
+  // 新增 hover
+  menuSubs.forEach(item => {
+    // 移入元素
+    item.onmouseenter = () => { mouseover(item) }
+    // 移出元素
+    item.onmouseleave = () => { mouseout(item) }
+  })
+}
+
+// 移入元素
+const mouseover = (el) => {
+  // 获取 menu-custom
+  const menuCustom = Array.from(el.getElementsByClassName('menu-custom'))[0]
+  // 获取 path
+  const path = menuCustom.dataset.path
+  // 记录 path
+  hoverPath.value = path
+}
+
+// 移出元素
+const mouseout = () => {
+  // 清空路由对象
+  hoverPath.value = ''
+}
+
+// 展开菜单
+const reloadOpenKeys = () => {
+  // 初始化展开菜单
+  const matched = Array.from(route.matched)
+  // 是否等于 3 个，说明有需要展开的菜单
+  if (matched.length === 3) {
+    // 需要展开的菜单
+    const path = matched[1].path
+    // 展开
+    openKeys.value = [path]
   }
 }
+
+// 监听路由变化
+watch(() => route.path, (newPath) => {
+  // 记录当前选中的路由地址
+  selectPath.value = newPath
+  // 选中菜单路由
+  selectedKeys.value = [selectPath.value]
+}, { immediate: true })
+
+// 初始化展开菜单
+onBeforeMount(() => {
+  reloadOpenKeys()
+})
+
+// 刷新 hover 对象
+onMounted(() => {
+  reloadHoverEls()
+})
 </script>
 
 <style>

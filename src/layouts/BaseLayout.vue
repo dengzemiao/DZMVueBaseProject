@@ -17,12 +17,12 @@
       <!-- 右侧头部内容 -->
       <a-layout-header class="layout-header">
         <!-- 展开收起 -->
-        <menu-unfold-outlined
+        <MenuUnfoldOutlined
           v-if="collapsed"
           class="layout-trigger"
           @click="() => (collapsed = !collapsed)"
         />
-        <menu-fold-outlined
+        <MenuFoldOutlined
           v-else
           class="layout-trigger"
           @click="() => (collapsed = !collapsed)"
@@ -36,24 +36,22 @@
   </a-layout>
 </template>
 
-<script>
+<script setup>
+import { ref, onBeforeMount } from 'vue'
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
 import Menu from './components/Menu.vue'
 import { routes } from '@/router/config'
-export default {
-  components: {
-    Menu
-  },
-  data() {
-    return {
-      collapsed: false,
-      menus: []
-    }
-  },
-  created () {
-    // 获取菜单列表
-    this.menus = routes.find(item => item.path === '/layout').children
+
+const collapsed = ref(false)
+const menus = ref([])
+
+// 获取菜单列表
+onBeforeMount(() => {
+  const layoutRoute = routes.find(item => item.path === '/layout')
+  if (layoutRoute) {
+    menus.value = layoutRoute.children || []
   }
-}
+})
 </script>
 <style>
 #layout-main {
