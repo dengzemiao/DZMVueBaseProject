@@ -28,8 +28,6 @@ import router from '@/router'
 
 router.beforeEach((to, from, next) => {
 
-  // 打印路由信息
-  console.log('路由守卫', to, from);
   // 默认允许访问
   next()
 
