@@ -6,6 +6,8 @@
 
   * vscode 插件：`Volar`
 
+  * ui 库：<https://www.antdv.com/components/overview-cn/>
+
 #### 一、项目情况
 
 - 默认 `无 CSS 预处理器`、`无 JS 语法检测`
