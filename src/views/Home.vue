@@ -1,7 +1,10 @@
 <template>
   <div class="container">
+    <!-- 版本信息 -->
     <div>Base Project</div>
     <div>Vite + Vue 3.x</div>
+    <!-- Antdv 安装提示 -->
+    <a-alert message="Antdv 已安装" style="margin-top: 15px;" type="success" show-icon />
   </div>
 </template>
 
