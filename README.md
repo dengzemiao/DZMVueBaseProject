@@ -8,7 +8,7 @@
 
   * vscode 插件：`Volar`
 
-  * ui 库：<https://www.antdv.com/components/overview-cn/>
+  * ui 库：[antdv v4.2.6](https://www.antdv.com/components/overview-cn/)
 
 #### 一、项目情况
 
