@@ -49,10 +49,56 @@
 </template>
 
 <script>
-// icon：默认图片名称(可选)
-// sicon：选中图片名称(可选)
-// type：0、a-icon图片(默认)  1、iconfont图片(icon class) 2、本地图片Assets（16*16、透明底色）
-// meta: { title: '路由名称', keepAlive: false, icon: 'home', sicon: 'setting', type: 0 }
+/**
+ * 菜单图标配置说明（自动识别，可以类型混搭）
+ * 
+ * 在路由配置的 meta 中设置图标相关属性，系统会自动识别图标类型。
+ * 
+ * 识别优先级（按顺序）：
+ * 1. 网络图片（最高优先级）
+ * 2. Ant Design Vue 组件
+ * 3. 本地图片（有文件后缀）
+ * 4. iconfont（字符串且无文件后缀）
+ * 
+ * @param {String|Object} icon - 默认图标（可选）
+ * @param {String|Object} sicon - 选中/悬浮时的图标（可选）
+ * 
+ * 图标类型说明：
+ * 
+ * 1. 网络图片
+ *   - 传入以 http:// 或 https:// 开头的 URL
+ *   - 示例：meta: { icon: 'https://example.com/icon.png' }
+ * 
+ * 2. Ant Design Vue 组件
+ *   - 传入组件对象（需先导入）
+ *   - 示例：meta: { icon: HomeOutlined, sicon: MenuOutlined }
+ *   - 需要安装：npm install @ant-design/icons-vue
+ *   - 需要导入：import { HomeOutlined, MenuOutlined } from '@ant-design/icons-vue'
+ * 
+ * 3. 本地图片
+ *   - 传入图片文件名（需放在 src/assets/img/ 目录下）
+ *   - 必须包含文件后缀：.png, .jpg, .jpeg, .gif, .svg, .webp, .bmp, .ico
+ *   - 示例：meta: { icon: 'menu_0_nomal.png', sicon: 'menu_0_select.png' }
+ *   - 图片要求：16*16 像素，透明底色（推荐）
+ * 
+ * 4. iconfont 图标
+ *   - 传入 iconfont 的 class 名称（字符串，无文件后缀）
+ *   - 示例：meta: { icon: 'icon-home', sicon: 'icon-home-active' }
+ *   - 使用方式：<span class="iconfont icon-home"></span>
+ * 
+ * 使用示例：
+ * // 本地图片
+ * meta: { icon: 'menu_0_nomal.png', sicon: 'menu_0_select.png' }
+ * 
+ * // Ant Design Vue 组件
+ * meta: { icon: HomeOutlined, sicon: MenuOutlined }
+ * 
+ * // iconfont
+ * meta: { icon: 'icon-home', sicon: 'icon-home-active' }
+ * 
+ * // 网络图片
+ * meta: { icon: 'https://example.com/icon.png' }
+ */
 import MenuItem from './MenuItem.vue'
 export default {
   components: {
