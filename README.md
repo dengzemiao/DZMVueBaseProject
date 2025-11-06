@@ -1,8 +1,12 @@
 # DZMVueBaseProject
 
-node: >=v22.12.0
+自用 `Vue` 空项目框架，只配置常用的项目使用环境：
 
-自用 Vue 空项目框架，只配置常用的项目使用环境
+  * node: `>= v22.12.0`
+
+  * vscode 插件：`Volar`
+
+  * ui 库：<https://www.antdv.com/components/overview-cn/>
 
 #### 一、项目情况
 
