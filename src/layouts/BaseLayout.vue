@@ -61,7 +61,6 @@ onBeforeMount(() => {
 }
 #layout-main .layout-trigger {
   font-size: 18px;
-  line-height: 64px;
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;
@@ -80,6 +79,8 @@ onBeforeMount(() => {
 #layout-main .layout-header {
   background: #fff;
   padding: 0;
+  display: flex;
+  align-items: center;
 }
 #layout-main .layout-content {
   margin: 24px 16px;
