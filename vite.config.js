@@ -16,6 +16,7 @@ export default defineConfig({
     },
   },
   server: {
+    open: true,
     proxy: {
       '/api': {
         target: 'https://test-admin-api.gooddrama.cc/api/',
