@@ -83,7 +83,7 @@ onBeforeMount(() => {
   align-items: center;
 }
 #layout-main .layout-content {
-  margin: 24px 16px;
+  margin: 16px;
   padding: 24px;
   background: #fff;
   min-height: 280px;
