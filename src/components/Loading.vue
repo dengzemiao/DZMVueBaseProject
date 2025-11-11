@@ -9,7 +9,7 @@ defineProps({
   // 加载状态
   loading: {
     type: Boolean,
-    default: false
+    default: true
   },
   // Icon大小：small、default、large
   size: {
