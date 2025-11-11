@@ -4,7 +4,7 @@
     <!-- 左侧菜单 -->
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <!-- logo -->
-      <div class="layout-logo" />
+      <div class="layout-logo"></div>
       <!-- 中间内容菜单 -->
       <Menu
         class="layout-menu"
