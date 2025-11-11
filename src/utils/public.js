@@ -31,11 +31,12 @@ const Pub = {
     })
   },
 
-  // 当前域名
-  domainName(path) {
-    return window.location.protocol + '//' + window.location.host + (path || '')
+  // 当前域名（可以传入指定页面路径跟参数）
+  domainUrl(path) {
+    // return window.location.protocol + '//' + window.location.host + (path || '')
+    return window.location.origin + (path || '')
   },
-
+  
   // ================================= 《 小数点处理 》
 
   // 检查指定数字小数点是否超过指定个数
