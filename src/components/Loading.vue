@@ -1,6 +1,6 @@
 <template>
-  <div v-if="loading" class="loading loading-show">
-    <a-spin class="loading-content" :size="size" />
+  <div v-if="loading" class="loading-container loading-container-show">
+    <a-spin class="loading-spin" :size="size" />
   </div>
 </template>
 
@@ -20,7 +20,7 @@ defineProps({
 </script>
 
 <style scoped>
-.loading {
+.loading-container {
   position: absolute;
   left: 0;
   top: 0;
@@ -33,10 +33,10 @@ defineProps({
   opacity: 0;
   transition: all 0.25s;
 }
-.loading-show {
+.loading-container-show {
   opacity: 1;
 }
-.loading-content {
+.loading-spin {
   margin: 0 auto;
 }
 </style>
