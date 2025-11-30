@@ -205,10 +205,14 @@ const reloadOpenKeys = () => {
   // 初始化展开菜单
   const matched = Array.from(route.matched)
   // 是否等于 3 个，说明有需要展开的菜单
-  if (matched.length === 3) {
-    // 需要展开的菜单
+  if (matched.length >= 3) {
+    // 需要展开的菜单（取第二个匹配的路由，即父级菜单）
     const path = matched[1].path
     // 展开
+    openKeys.value = [path]
+  } else if (matched.length === 2) {
+    // 如果只有2个匹配，说明当前路由是子菜单，需要展开父级
+    const path = matched[0].path
     openKeys.value = [path]
   }
 }
@@ -219,6 +223,8 @@ watch(() => route.path, (newPath) => {
   selectPath.value = newPath
   // 选中菜单路由
   selectedKeys.value = [selectPath.value]
+  // 重新展开菜单
+  reloadOpenKeys()
 }, { immediate: true })
 
 // 初始化展开菜单
