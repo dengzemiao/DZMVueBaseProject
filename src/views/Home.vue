@@ -9,6 +9,8 @@
     <a-button style="margin-top: 15px;" @click="touchLayout">跳转 Layout 布局样式（自定义菜单，菜单 icon 支持：自带icon、iconfont、本地icon）</a-button>
     <!-- Loading 测试 -->
     <a-button style="margin-top: 15px;" @click="toggleLoading">切换 Loading 状态</a-button>
+    <!-- 增高容器 -->
+    <div style="width: 100%; height: 1000px; background-color: red; margin-top: 20px;"></div>
     <!-- Loading 组件 -->
     <Loading :loading="loading" size="large" />
   </div>
