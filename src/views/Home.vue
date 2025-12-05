@@ -16,7 +16,7 @@
 
 <script setup>
 import { ref, onBeforeMount } from 'vue'
-import { getHuoShanOssToken } from '@/api/request'
+// import { getHuoShanOssToken } from '@/api/request'
 import Pub from '@/utils/public'
 import Loading from '@/components/Loading.vue'
 
@@ -26,9 +26,9 @@ onBeforeMount(() => {
   // 打印环境变量
   console.log('onBeforeMount', import.meta.env.VITE_API_BASE_URL)
   // 测试接口请求
-  getHuoShanOssToken().then(res => {
-    console.log('getHuoShanOssToken', res)
-  })
+  // getHuoShanOssToken().then(res => {
+  //   console.log('getHuoShanOssToken', res)
+  // })
 })
 
 // 跳转 layout
